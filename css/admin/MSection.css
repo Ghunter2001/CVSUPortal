@@ -1,0 +1,160 @@
+.sessionRole {
+    display: none;
+}
+
+.dashboard .dash-content {
+    padding: 60px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.dash-content .container {
+    width: 30%;
+    height: max-content;
+    padding: 10px 20px;
+    background-color: var(--panel-color);
+    
+}
+
+
+
+.dash-content .container .inCon{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.dash-content .container .inCon .Input {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.dash-content .conTable {
+    width: 68%;
+    padding: 10px 10px;
+    background-color: var(--panel-color);
+
+}
+
+
+
+
+.dash-content .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dash-content .header a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.dash-content .header h3 {
+    color: var(--primary-color);
+}
+
+.dash-content .header span {
+    color: var(--secondary-color);
+}
+
+
+.table {
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    table-layout: fixed;
+}
+
+
+
+
+
+@media (max-width: 1000px) {
+    table {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 780px) {
+    /* .dash-content .boxes .box {
+        width: calc(100% / 2 - 15px);
+        margin-top: 15px;
+    } */
+
+
+    .dashboard .dash-content {
+        gap: 20px;
+    }
+
+    .dash-content .container {
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .dash-content .conTable {
+        width: 100%;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 560px) {
+    .dash-content .boxes .box {
+        width: 100%;
+    }
+
+    .dashboard .dash-content {
+        gap: 20px;
+    }
+
+    .dash-content .container {
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .dash-content .conTable {
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    table {
+        font-size: 10px;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        table-layout: auto;
+        text-wrap: wrap;
+        word-wrap:break-word;
+    }
+
+
+}
+
+@media (max-width: 400px) {
+
+
+    .dashboard .dash-content {
+        min-width: 350px;
+    }
+
+}
