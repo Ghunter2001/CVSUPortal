@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/student/grades.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
+    <title>CVSUPortal - Student's Grades</title>
+</head>
+
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="img/CvsuLogo.png" alt="">
+            </div>
+
+            <span class="logo_name">Student Portal</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <a href="dashboard">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="grades">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Grades</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="classSched">
+                        <i class="uil uil-schedule"></i>
+                        <span class="link-name">Class Schedule</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li>
+                    <a href="login.html">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="top">
+            <i class="sidebar-toggle"><img src="img/bars.svg"></i>
+
+            <div class="profile">
+                <img src="img/user.svg">
+                <div class="session">
+                    <p id="sessionName"></p>
+                    <p id="sessionNumber"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+
+        <div class="dash-content">
+
+            <div class="container">
+                <div class="header">
+                    <label for="sYt">
+                        <h3>School Year & Term</h3>
+                    </label>
+                    <select id="sYt" name="sYt">
+                        <option value="#">2022-2023 1st Term</option>
+                        <option value="#">2022-2023 2nd Term</option>
+                        <option value="#">2023-2024 1st Term</option>
+                        <option value="#">2023-2024 2nd Term</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="container">
+
+                <div class="tableHeader">
+
+                    <span>Capstone</span>
+
+                    <h5>
+                        Adviser Name | Release Date
+                    </h5>
+                    <hr>
+                </div>
+
+
+                <div class="grades">
+                    <h5>No Records Found</h5>
+
+                </div>
+            </div>
+
+            <div class="container">
+                <span>Grading System:</span>
+
+                <div class="value">
+                    <ul>
+                        <li>96.70 - 100% (1.00) Marked Excellent</li>
+                        <li>93.4 - 96.6% (1.25) Excellent</li>
+                        <li>90.01 - 93.3% (1.50) Very Superior</li>
+                        <li>86.70 - 90.0% (1.75) Superior</li>
+                    </ul>
+
+                    <ul>
+                        <li>83.4 - 86.6% (2.00) Very Good</li>
+                        <li>80.01 - 83.3% (2.25) Good</li>
+                        <li>76.7 - 80.0% (2.50) Satisfactory</li>
+                        <li>73.4 - 76.6% (2.75) Fair</li>
+                    </ul>
+
+                    <ul>
+                        <li>70.0 - 73.3% (3.00) Fair</li>
+                        <li>50.0 - 69.99% (4.00) Passed</li>
+                        <li>Below 50 (5.0) Conditional Failure</li>
+                        <li>Incomplete (INC)</li>
+                        <li>Droppedd Subject (DRP)</li>
+                    </ul>
+                </div>
+                
+            </div>
+            
+        </div>
+        <footer>
+            <h3>&copy; Cavite State University - Bacoor Campus</h3>
+        </footer>
+    </div>
+    
+
+    <script src="script/student/grades.js"></script>
+    <script src="script/student/main.js"></script>
+</body>
+
+</html>

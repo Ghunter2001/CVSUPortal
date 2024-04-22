@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/student/classSched.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
+    <title>CVSUPortal - Student's Class Schedule</title>
+</head>
+
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="img/CvsuLogo.png" alt="">
+            </div>
+
+            <span class="logo_name">Student Portal</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <a href="dashboard">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="grades">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Grades</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="classSched">
+                        <i class="uil uil-schedule"></i>
+                        <span class="link-name">Class Schedule</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li>
+                    <a href="login.html">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="top">
+            <i class="sidebar-toggle"><img src="img/bars.svg"></i>
+
+            <div class="profile">
+                <img src="img/user.svg">
+                <div class="session">
+                    <p id="sessionName"></p>
+                    <p id="sessionNumber" name="sessionNumber"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="container">
+                <div class="header">
+                    <div class="selectors">
+                        <label for="sYt">
+                            <h3>School Year & Term: </h3>
+                        </label>
+                        <select id="sYt" name="sYt" onchange="fetchSchedule()">
+                            <option value="2022-2023 1st Term">2022-2023 1st Term</option>
+                            <option value="2022-2023 2nd Term">2022-2023 2nd Term</option>
+                            <option value="2023-2024 1st Term">2023-2024 1st Term</option>
+                            <option value="2023-2024 2nd Term">2023-2024 2nd Term</option>
+                        </select>
+                    </div>
+                
+                    <div class="selectors">
+                        <label for="days">
+                            <h3>Day: </h3>
+                        </label>
+                        <select id="days" name="days" onchange="fetchSchedule()">
+                            <option value="M">Monday</option>
+                            <option value="T">Tuesday</option>
+                            <option value="W">Wednesday</option>
+                            <option value="TH">Thursday</option>
+                            <option value="F">Friday</option>
+                            <option value="S">Saturday</option>
+                            <option value="S">Sunday</option>
+                        </select>
+                    </div>
+
+                    
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="header">
+                    <h3>Classes for Today | <span id="weekday" name="weekday"></span> | <span id="date"></span></h3>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="table" id="table">
+                    {{TABLE_CONTENT}}
+                </div>
+            </div>
+        </div>
+        <footer>
+            <h3>&copy; Cavite State University - Bacoor Campus</h3>
+        </footer>
+    </div>
+
+    <script src="script/student/classSched.js"></script>
+    <script src="script/student/main.js"></script>
+</body>
+
+</html>

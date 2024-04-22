@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/admin/DataStudents.css">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
+    <title>CVSUPortal - Students Data</title>
+</head>
+
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="img/CvsuLogo.png" alt="">
+            </div>
+
+            <span class="logo_name">Admin Portal</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <a href="adminDash">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Home</span>
+                    </a>
+                </li>
+
+
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" role="button">
+                        <i class="uil uil-file-check-alt"></i>
+                        <span class="link-name">Transaction</span>
+                        <span class="dropdown-icon"><i class="uil uil-angle-down"></i></span>
+                    </a>
+
+                    <ul class="dropdown-content">
+                        <li><a href="enrollment"><span class="link-name">Enrollment</span></a></li>
+                        <li><a href="schedule"><span class="link-name">Schedule</span></a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" role="button">
+                        <i class="uil uil-users-alt"></i>
+                        <span class="link-name">Data Entry</span>
+                        <span class="dropdown-icon"><i class="uil uil-angle-down"></i></span>
+                    </a>
+
+                    <ul class="dropdown-content">
+                        <li><a href="students"><span class="link-name">Students</span></a></li>
+                        <li><a href="teachers"><span class="link-name">Teachers</span></a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" role="button">
+                        <i class="uil uil-database"></i>
+                        <span class="link-name">Management</span>
+                        <span class="dropdown-icon"><i class="uil uil-angle-down"></i></span>
+                    </a>
+
+                    <ul class="dropdown-content">
+                        <li><a href="acadyear"><span class="link-name">Academic Year</span></a></li>
+                        <li><a href="courses"><span class="link-name">Courses</span></a></li>
+                        <li><a href="sections"><span class="link-name">Sections</span></a></li>
+                        <li><a href="subjects"><span class="link-name">Subjects</span></a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" role="button">
+                        <i class="uil uil-save"></i>
+                        <span class="link-name">Records</span>
+                        <span class="dropdown-icon"><i class="uil uil-angle-down"></i></span>
+                    </a>
+
+                    <ul class="dropdown-content">
+                        <li><a href="history"><span class="link-name">Enrollment History</span></a></li>
+                        <li><a href="Archive"><span class="link-name">Archive</span></a></li>
+                        <li><a href="requirements"><span class="link-name">Requirements</span></a></li>
+                    </ul>
+                </li>
+
+
+
+            </ul>
+
+            <ul class="logout-mode">
+                <li>
+                    <a href="login.html">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="top">
+            <i class="sidebar-toggle"><img src="img/bars.svg"></i>
+
+            <!--PROFILE-->
+            <div class="profile">
+                <img src="img/user.svg">
+                <div class="session">
+                    <p id="sessionName"></p>
+                    <p class="sessionRole" id="sessionNumber"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="container">
+                
+            </div>
+
+            <div class="conTable">
+                
+
+            </div>
+
+        </div>
+
+        <footer>
+            <h3>&copy; Cavite State University - Bacoor Campus</h3>
+        </footer>
+    </div>
+
+
+
+    <script src="script/admin/DataStudents.js"></script>
+    <script src="script/admin/main.js"></script>
+</body>
+
+</html>

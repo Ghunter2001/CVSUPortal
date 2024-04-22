@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/student/dashboard.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
+    <title>CVSUPortal - Student's Dashboard</title>
+</head>
+
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="img/CvsuLogo.png" alt="">
+            </div>
+
+            <span class="logo_name">Student Portal</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <a href="dashboard">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="grades">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Grades</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="classSched">
+                        <i class="uil uil-schedule"></i>
+                        <span class="link-name">Class Schedule</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li>
+                    <a href="login.html">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="dashboard">
+        <div class="top">
+            <i class="sidebar-toggle"><img src="img/bars.svg"></i>
+
+            <!--PROFILE-->
+            <div class="profile">
+                <img src="img/user.svg">
+                <div class="session">
+                    <p id="sessionName"></p>
+                    <p id="sessionNumber"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="container">
+                <div class="header">
+                    <h3>Classes for Today | <span id="weekday"></span> | <span id="date"></span></h3>
+                    <a href="classSched">View</a>
+                </div>
+                <hr>
+                <div class="table">
+                    {{TABLE_CONTENT}}
+                </div>
+            </div>
+
+            <div class="container-news">
+                <div class="header">
+                    <h3>Latest News</h3>
+                    <a href="#">Visit</a>
+                </div>
+                <hr>
+                <div class="inCon">
+                    <div class="post">
+                        <iframe
+                            src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fits.cvsubacoor%2Fposts%2Fpfbid02Fz7J8EtyNeq45HmXH2FchJ4n95UdoGbpTRMcoxyKZ4XvNZo6HrSmbKwbbdrpcXm6l&show_text=true&width=500"
+                            width="500" height="773" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                            allowfullscreen="true"
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer>
+            <h3>&copy; Cavite State University - Bacoor Campus</h3>
+        </footer>
+    </div>
+
+    <script src="script/student/dashboard.js"></script>
+    <script src="script/student/main.js"></script>
+</body>
+
+</html>
