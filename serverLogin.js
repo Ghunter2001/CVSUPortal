@@ -5,10 +5,10 @@ const { createPool } = require("mysql");
 
 
 const pool = createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "cvsuportal",
+    host: "boqsxje636m1zh7arjwz-mysql.services.clever-cloud.com",
+    user: "uqmghk5cebbhshej",
+    password: "YbrMP14IoaJzXTZBbRKv",
+    database: "boqsxje636m1zh7arjwz",
 })
 
 const app = express();
