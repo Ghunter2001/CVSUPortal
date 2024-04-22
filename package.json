@@ -4,6 +4,7 @@
   "description": "",
   "main": "serverMain.js",
   "scripts": {
+    "start": "node serverMain.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
