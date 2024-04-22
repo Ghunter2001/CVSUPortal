@@ -126,13 +126,17 @@
                     <h3>Manage Students </h3>
                 </div>
                 <hr>
-                <form id="datastudentForm">
+                <form action="addstudentForm" id="addStudentForm" method="post">
                     <div class="inCon  ">
+
+                        <div class="Input">
+                            <span>LRN:</span>
+                            <input class="input-fields" type="text" id="lrn" name="lrn">
+                        </div>
 
                         <div class="Input">
                             <span>Last Name:</span>
                             <input class="input-fields" type="text" id="lname" name="lname" placeholder="e.g. Doe">
-
                         </div>
 
                         <div class="Input">
@@ -153,8 +157,9 @@
                         <div class="Input">
                             <span>Sex:</span>
                             <select class="input-fields" id="sex" name="sex">
-                                <option value="M">Male</option>
-                                <option value="F">Female</option>
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                             </select>
                         </div>
 
@@ -165,8 +170,8 @@
 
                         <div class="Input">
                             <span>Email Address:</span>
-                            <input class="input-fields" type="date" id="email" name="email"
-                                placeholder="namelastname@gmail.com">
+                            <input class="input-fields" type="email" id="email" name="email"
+                                placeholder="namelastname@gmail.com" style="text-transform: lowercase;">
                         </div>
 
                         <div class="Input">
@@ -175,7 +180,7 @@
                                 placeholder="e.g. Palladium St. San Nicolas 3">
                         </div>
 
-                        <button type="submit">Submit</button>
+                        <button type="submit" class="btn" id="submitBTN">Submit</button>
                     </div>
                 </form>
             </div>
