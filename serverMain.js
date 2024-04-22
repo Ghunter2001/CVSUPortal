@@ -19,6 +19,8 @@ app.use(user);
 app.use(admin);
 app.use(teacher);
 
+const port = process.env.PORT || 4000;
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/pages/landing/main.html");
 });
@@ -32,6 +34,6 @@ app.get("/aboutmain", (req, res) => {
 });
 
 //START SERVER
-app.listen(2000, () => {
-  console.log("Server is running on port 2000");
-});
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
+})
