@@ -121,7 +121,7 @@ app.get('/countUsers', function (req, res) {
 
 
 
-
+//ENROLLMENT TAB
 
 app.get("/enrollment", function (req, res) {
 
@@ -227,12 +227,11 @@ function deleteRow(student_number) {
   });
 }
 
-
-
 app.get("/enrollment", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/TEnrollment.html");
 });
 
+//ENROLLMENT END
 
 
 app.get("/schedule", function (req, res) {
