@@ -50,14 +50,17 @@ nav .navigation ul {
     align-items: center;
     bottom: 100%;
     height: 50%;
+    margin-left: 30px;
 }
 
 nav .navigation ul li{
     list-style: none;
-    margin-left: 30px;
-    align-items: center;
+    margin-left: 100px;
+    margin-right: 80px;
+    padding-top: 3%;   
 }
 nav .navigation ul li a{
+    position: center;
     text-decoration: none;
     color: rgb(21,21, 100);
     font-size: 16px;
