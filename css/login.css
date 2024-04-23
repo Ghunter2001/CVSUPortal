@@ -15,7 +15,6 @@ input {
   position: relative;
   width: 100%;
   background-color: #fff;
-  /* background-image: url(/img/BG-3.jpg); */
   background-size: cover;
   min-height: 100vh;
   overflow: hidden;
@@ -418,24 +417,31 @@ form.sign-in-form {
     padding: 0.5rem 1rem;
   }
 
+  .signin-signup
+   {
+    height: 80vh;
+   }
+
   .container {
     padding: 1.5rem;
+    min-height: 400px;
   }
 
   .container:before {
-    bottom: 72%;
+    bottom: 75%;
     left: 50%;
   }
 
   .container.sign-up-mode:before {
-    bottom: 28%;
+    bottom: 25%;
     left: 50%;
   }
+  .twoblock {
+    width: 50%;
+    margin: 10px 0;
+    justify-content: center;
+    align-items: center;
+  }
+
 }
 
-.twoblock {
-  width: 50%;
-  margin: 10px 0;
-  justify-content: center;
-  align-items: center;
-}

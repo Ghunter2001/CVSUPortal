@@ -16,7 +16,6 @@
     height: max-content;
     padding: 10px 20px;
     background-color: var(--panel-color);
-    
 }
 
 .dash-content .container .header {
@@ -37,7 +36,7 @@
 
 
 
-.modal {
+.myModal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -54,8 +53,49 @@
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
 }
+
+
+.myModal .header {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.myModal .header-top {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 60px;  
+}
+
+
+
+
+
+.modal-content .newStudentFom {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 60px;
+    gap: 5px;  
+}
+
+.modal-content .newStudentFom .input {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 20px;  
+}
+
+.strandOptions {
+    display: none;
+}
+
+.courseOptions {
+    display: none;
+}
+
+
 
 .close {
     color: #aaa;
@@ -71,15 +111,7 @@
     cursor: pointer;
 }
 
-.modal .modal-content form {
-    display: flex;
-    gap: 20px;
-}
 
-.modal .modal-content form .column {
-    display: flex;
-    flex-direction: column;
-}
 
 
 

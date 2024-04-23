@@ -1,21 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const fs = require("fs");
-require('dotenv').config();
-const { createPool } = require("mysql");
-
-
-
-const pool = createPool({
-    host: process.env.MYSQL_ADDON_HOST,
-    user: process.env.MYSQL_ADDON_USER,
-    password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB,
-    port: process.env.MYSQL_ADDON_PORT
-  });
-
+const pool = require('./database');
 
 const app = express();
-
 
 
 app.get('/sessionAdmin', (req, res) => {
@@ -133,7 +121,7 @@ app.get('/countUsers', function (req, res) {
 
 
 
-
+//ENROLLMENT TAB
 
 app.get("/enrollment", function (req, res) {
 
@@ -239,12 +227,11 @@ function deleteRow(student_number) {
   });
 }
 
-
-
 app.get("/enrollment", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/TEnrollment.html");
 });
 
+//ENROLLMENT END
 
 
 app.get("/schedule", function (req, res) {
@@ -886,11 +873,12 @@ app.get("/subjects", function (req, res) {
 
 
 
-app.post("/datastudentForm", (req, res) => {
-  const { lname, fname, mname, cp, sex, bdate, email, address } = req.body;
+//DATA STUDENT TAB
+app.post("/addstudentForm", (req, res) => {
+  const { lrn, lname, fname, mname, cp, sex, bdate, email, address } = req.body;
 
 
-  if (lname !== "" || fname !== "" || mname !== "" || cp !== "" || sex !== "" || bdate !== "" || email !== "" || address !== "") {
+  if (lrn !== "" || lname !== "" || fname !== "" || mname !== "" || cp !== "" || sex !== "" || bdate !== "" || email !== "" || address !== "") {
     pool.getConnection((err, connect) => {
       if (err) {
         console.error('Error connecting to database: ' + err.stack);
@@ -898,7 +886,7 @@ app.post("/datastudentForm", (req, res) => {
       }
 
 
-      connect.query("SELECT * FROM details_students WHERE lname= ?", [lname], (err, result) => {
+      connect.query("SELECT * FROM details_students WHERE lrn= ? OR email = ?", [lrn, email], (err, result) => {
         if (err) throw err;
 
         if (result.length > 0) {
@@ -910,7 +898,7 @@ app.post("/datastudentForm", (req, res) => {
                     `);
           connect.release();
         } else {
-          connect.query("INSERT INTO subject(lname, fname, mname, bdate, Sex, cp, address, email) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [lname, fname, mname, bdate, sex, cp, address, email], (err, result) => {
+          connect.query("INSERT INTO details_students(lrn, lname, fname, mname, bdate, Sex, cp, address, email) VALUES(?,?, ?, ?, ?, ?, ?, ?, ?)", [lrn, lname, fname, mname, bdate, sex, cp, address, email], (err, result) => {
             if (err) throw err;
 
             res.send(`
@@ -923,7 +911,6 @@ app.post("/datastudentForm", (req, res) => {
           });
         }
       });
-
     });
   } else {
     console.log("Input Details");
@@ -969,6 +956,7 @@ function generateTableStudent(data, callback) {
             <th>
               Action
             </th>
+            <th>LRN</th>
             <th>Last Name</th>
             <th>First Name</th>
             <th>Middle Namel</th>
@@ -988,9 +976,9 @@ function generateTableStudent(data, callback) {
     tableStudents += `
           <tr>
             <td>
-              <button onclick="deleteRow('${row.lname}')">Delete</button>
+              <button onclick="archiveRow('${row.lrn}')">Delete</button>
             </td>
-
+            <td>${row.lrn}</td>
             <td>${row.lname}</td>
             <td>${row.fname}</td>
             <td>${row.mname}</td>
@@ -1016,19 +1004,21 @@ function generateTableStudent(data, callback) {
 }
 
 // Function to delete row
-function deleteRow(lname) {
-  // Execute a query to delete the row with the given aycode
-  const queryString = "DELETE FROM details_students WHERE lnmae = ?";
-  pool.query(queryString, [lname], (err, result) => {
+app.post('/archive', function (req, res) {
+  const lrn = req.body.lrn;
+
+  const queryString = 'UPDATE details_students SET status = "INACTIVE" WHERE lrn = ?';
+  pool.query(queryString, [lrn], (err, result) => {
     if (err) {
       console.error(err);
-      // Handle error response
-    } else {
-      // Row deleted successfully
-      // You can send a success response or handle it as needed
+      return res.status(500).send('Error store row');
     }
+    console.log('Row store');
+
+    res.status(200).send('Row store successfully');
   });
-}
+});
+
 
 app.get("/students", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/DataStudents.html");
@@ -1165,22 +1155,19 @@ function generateTableTeachers(data, callback) {
 }
 
 // Function to delete row
-function deleteRow(output) {
-  // Execute a query to delete the row with the given aycode
-  const queryString = "DELETE FROM details_teachers WHERE T_ID = ?";
-  pool.query(queryString, [output], (err, result) => {
+app.post('/archive', function (req, res) {
+  const lrn = req.body.lrn;
+
+  const queryString = 'UPDATE details_students SET status = "INACTIVE" WHERE lrn = ?';
+  pool.query(queryString, [lrn], (err, result) => {
     if (err) {
       console.error(err);
-      // Handle error response
-    } else {
-      // Row deleted successfully
-      // You can send a success response or handle it as needed
+      return res.status(500).send('Error store row');
     }
-  });
-}
+    console.log('Row store');
 
-app.get("/teachers", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/DataTeachers.html");
+    res.status(200).send('Row store successfully');
+  });
 });
 
 

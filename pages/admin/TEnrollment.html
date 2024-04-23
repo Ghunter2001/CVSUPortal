@@ -126,68 +126,115 @@
                     <div class="head-title">
                         <h3>Student Enrolled List</h3>
                     </div>
-
                     <div class="head-right">
                         <div class="button">
                             <input type="search">
-                            <button type="submit"">Search</button>
-                            <button id="newButton" type="button">New</button>                 
-                            <button type="submit"">Cancel</button>
+                            <button type="submit">Search</button>
+                            <button id="newButton" type="button">New</button>
+                            <button id="cancelButton" type="button">Cancel</button>
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="myModal" class="modal">
+
+            <div id="myModal" class="myModal">
                 <div class="modal-content">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <div class="header"><span>Enrollment Module</span></div>
-                    <form>
-                        <div class="column">
-                            <h4 class="">Enrollment Id: <span>#</span> </h4>
-                            <label for="snumber">Student Number:</label>
-                            <input type="text" id="snumber" name="snumber">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name">
-                            <label for="course">Course:</label>
-                            <input type="text" id="course" name="course">
-                        </div>
-                        <div class="column">
-                            <label for="yrlvl">Year Level:</label>
-                            <input type="text" id="yrlvl" name="yrlvl">
-                            <label for="sec">Section:</label>
-                            <input type="text" id="sec" name="sec">
-                            <label for="sem">Semester:</label>
-                            <input type="text" id="sem" name="sem">
-                        </div>
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
-            </div>
 
-            <div class="container">
-                <div class="header">
-                    
-                </div>
-                <hr>
-                <div class="inCon">
+                    <div class="header">
 
-                    <div class="table">
-                        {{TABLE_Enrolled}}
+                        <div class="header-top">
+                            <span>Enrollment Module</span>
+
+                            <div class="search">
+                                <input type="search" name="search" id="search">
+                                <button type="button" class="btn" id="submitBTN">Search</button>
+                            </div>
+
+                        </div>
+
+
+                        <span class="close" onclick="closeModal()">&times;</span>
                     </div>
 
+
+                    <form>
+                        <div class="twocol">
+                            <div class="newStudentFom">
+
+                                <div class="input">
+                                    <label for="lrn">LRN:</label>
+                                    <input type="text" id="lrn" name="lrn" readonly>
+                                </div>
+                                <label for="snumber">Student Number:</label>
+                                <div class="input">
+                                    <input class="input-fields" type="text" id="snumber" name="snumber"
+                                        placeholder="e.g. 202112345">
+                                    <button onclick="generateNumbers()">Generate</button>
+                                </div>
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name">
+                                <label for="entry">Entry:</label>
+                                <div class="input">
+                                    <select class="input-fields" id="entry" name="entry" onchange="toggleEntryOption()">
+                                        <option value="">Please Select</option>
+                                        <option value="New Student">New Student</option>
+                                        <option value="Transferee">Transferee</option>
+                                        <option value="2nd Courser">2nd Courser</option>
+                                    </select>
+                                </div>
+                                <div class="strandOptions" id="strandOptions">
+                                    <label for="strand">SHS Strand:</label>
+                                    <div class="input">
+                                        <select class="input-fields" id="strand" name="strand">
+                                            <option value="">Please Select</option>
+                                            <option value="TVL">TVL</option>
+                                            <option value="ABM">ABM</option>
+                                            <option value="GAS">GAS</option>
+                                            <option value="HUMSS">HUMSS</option>
+                                            <option value="STEM">STEM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="courseOptions" id="courseOptions">
+                                    <label for="CboCourse">Preferred Course:</label>
+                                    <div class="input">
+                                        <select class="input-fields" id="CboCourse" name="CboCourse">
+                                            <option value="">Please Select</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn" id="submitBTN">Submit</button>
+                            </div>
+
+                        </div>
                 </div>
+                </form>
             </div>
-
-
-
-
-
-
         </div>
-        <footer>
-            <h3>&copy; Cavite State University - Bacoor Campus</h3>
-        </footer>
+
+
+        <div class="container">
+            <div class="header">
+                
+            </div>
+            <hr>
+            <div class="inCon">
+
+                <div class="table">
+                    {{TABLE_Enrolled}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <h3>&copy; Cavite State University - Bacoor Campus</h3>
+    </footer>
     </div>
 
     <script src="script/admin/TEnrollment.js"></script>

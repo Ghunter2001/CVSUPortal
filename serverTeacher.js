@@ -1,17 +1,10 @@
+require('dotenv').config();
 const express = require("express");
 const fs = require("fs");
-
+const pool = require('./database');
 
 const app = express();
 
-const config = {
-  server: "WIN-LKIRUI2ATS4\\SQLSTD2019",
-  database: "accounts",
-  driver: "msnodesqlv8",
-  options: {
-    trustedConnection: true,
-  },
-};
 
 
 //TEACHER DASHBOARD TAB

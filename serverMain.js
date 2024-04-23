@@ -1,9 +1,9 @@
 const express = require("express");
-
 const login = require("./serverLogin");
 const user = require("./serverUser");
 const admin = require("./serverAdmin");
 const teacher = require("./serverTeacher");
+
 
 
 const app = express();
@@ -18,6 +18,7 @@ app.use(login);
 app.use(user);
 app.use(admin);
 app.use(teacher);
+
 
 const port = process.env.PORT || 4000;
 
