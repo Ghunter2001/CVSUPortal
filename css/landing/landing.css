@@ -85,17 +85,22 @@ nav .navigation ul li a:hover{
     padding-top: 40px;
 }
 #home h2{
-    height: 10%;
+    height: 4%;
     color: #fff;
     font-size: 2.2rem;
     line-height: 1px ;
+    margin-right: 45%;
+    margin-top: 22%;
+
 }
 #home p{
     height: 50%;
     width: 50%;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     line-height: 25px ;
+    text-align: left;
+    margin-right: 45%;
 }
 #home .btn{
     margin-top: 30px;
