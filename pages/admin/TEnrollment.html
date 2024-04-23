@@ -59,7 +59,7 @@
 
                     <ul class="dropdown-content">
                         <li><a href="students"><span class="link-name">Students</span></a></li>
-                        <li><a href="teachers"><span class="link-name">Teachers</span></a></li>
+                        <li><a href="teachers"><span class="link-name">Instructors</span></a></li>
                     </ul>
                 </li>
 
@@ -126,18 +126,27 @@
                     <div class="head-title">
                         <h3>Student Enrolled List</h3>
                     </div>
-                    <div class="head-right">
-                        <div class="button">
+                    <form action="/searchEnroll" class="head-right" method="get" id="search">
+                        <div class="button" name="searchBox" id="searchBox">
                             <input type="search">
-                            <button type="submit">Search</button>
+                            <button type="submit" name="searchEnrolled" id="searchEnrolled">Search</button>
                             <button id="newButton" type="button">New</button>
                             <button id="cancelButton" type="button">Cancel</button>
-
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
 
+
+            <div class="container">
+                <hr>
+                <div class="inCon">
+                    <div class="table">
+                        {{TABLE_Enrolled}}
+                    </div>
+                </div>
+            </div>
+            
 
             <div id="myModal" class="myModal">
                 <div class="modal-content">
@@ -148,7 +157,7 @@
                             <span>Enrollment Module</span>
 
                             <div class="search">
-                                <input type="search" name="search" id="search">
+                                <input type="search" name="searchStudents" id="searchStudents">
                                 <button type="button" class="btn" id="submitBTN">Search</button>
                             </div>
 
@@ -216,19 +225,9 @@
         </div>
 
 
-        <div class="container">
-            <div class="header">
-                
-            </div>
-            <hr>
-            <div class="inCon">
+        
 
-                <div class="table">
-                    {{TABLE_Enrolled}}
-                </div>
-
-            </div>
-        </div>
+    </div>
     </div>
 
 

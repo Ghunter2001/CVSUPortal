@@ -118,6 +118,32 @@ app.get('/countUsers', function (req, res) {
   });
 });
 
+app.get('/countInstructor', function (req, res) {
+  pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Database connection error');
+      return;
+    }
+
+
+    const query = 'SELECT COUNT(*) AS count FROM details_teachers';
+
+    connection.query(query, function (err, result) {
+      connection.release(); // Release the connection
+      if (err) {
+        console.log(err);
+        res.status(500).send('Database query error');
+        return;
+      }
+
+      const count = result[0].count;
+
+      res.send(String(count));
+    });
+  });
+});
+
 
 
 
@@ -183,7 +209,7 @@ function generateTableEnrolled(data, callback) {
     tableEnrolled += `
           <tr>
             <td>
-              <button onclick="deleteRow('${row.student_number}')">Delete</button>
+              <a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
 
             <td>${row.student_number}</td>
@@ -367,8 +393,8 @@ function generateTableHTML(data, callback) {
             <td>${row.sem}</td>
             <td>${row.status}</td>
             <td>
-              <button onclick="updateStatus('${row.aycode}')">Open</button>
-              <button onclick="deleteRow('${row.aycode}')">Delete</button>
+              <a onclick="updateStatus('${row.aycode}')"><img src="/img/check.svg" alt="Open" </a>
+              <a onclick="deleteRow('${row.aycode}')"><img src="/img/delete.svg" alt="Delete" ></a>
             </td>
           </tr>`;
   }
@@ -526,7 +552,7 @@ function generateTableCourses(data, callback) {
             <td>${row.courseCode}</td>
             <td>${row.description}</td>
             <td>
-              <button onclick="deleteRow('${row.courseCode}')">Delete</button>
+              <a onclick="deleteRow('${row.courseCode}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
           </tr>`;
   }
@@ -661,7 +687,7 @@ function generateTableSection(data, callback) {
             <td>${row.sem}</td>
             <td>${row.sec}</td>
             <td>
-              <button onclick="deleteRow('${row.secID}')">Delete</button>
+              <a onclick="deleteRow('${row.secID}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
           </tr>`;
   }
@@ -804,7 +830,7 @@ function generateTableSubject(data, callback) {
             <td>${row.unitLab}</td>
             <td>${row.prerequisite}</td>
             <td>
-              <button onclick="deleteRow('${row.subcode}')">Delete</button>
+              <a onclick="deleteRow('${row.subcode}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
           </tr>`;
   }
@@ -976,7 +1002,7 @@ function generateTableStudent(data, callback) {
     tableStudents += `
           <tr>
             <td>
-              <button onclick="archiveRow('${row.lrn}')">Delete</button>
+              <a onclick="archiveRow('${row.lrn}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
             <td>${row.lrn}</td>
             <td>${row.lname}</td>
@@ -1129,7 +1155,7 @@ function generateTableTeachers(data, callback) {
     tableTeachers += `
           <tr>
             <td>
-              <button onclick="deleteRow('${row.T_ID}')">Delete</button>
+              <a onclick="deleteRow('${row.T_ID}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
 
             <td>${row.T_ID}</td>

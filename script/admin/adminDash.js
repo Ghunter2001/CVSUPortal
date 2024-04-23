@@ -28,4 +28,14 @@ acadyear.onreadystatechange = function () {
 };
 acadyear.send();
 
+var instructorCounts = new XMLHttpRequest();
+instructorCounts.open('GET', '/countInstructor', true);
+instructorCounts.onreadystatechange = function () {
+  if (instructorCounts.readyState === 4 && instructorCounts.status === 200) {
+
+    document.getElementById('instructorCount').textContent = instructorCounts.responseText;
+  }
+};
+instructorCounts.send();
+
 

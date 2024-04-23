@@ -375,6 +375,11 @@ nav.close~.dashboard .top {
 
 
 
+td img{
+    width:25px;
+}
+
+
 footer {
     display: flex;
     justify-content: center;

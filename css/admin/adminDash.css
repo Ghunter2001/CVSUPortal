@@ -46,6 +46,7 @@
     align-items: center;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    gap: 15px;
 }
 
 .dash-content .boxes .box {
@@ -57,6 +58,7 @@
     padding: 15px 20px;
     background-color: var(--box1-color);
     transition: var(--tran-05);
+
 }
 
 .boxes .box i {
@@ -86,6 +88,10 @@
 }
 
 .boxes .box.box3 {
+    background-color: var(--primary-color);
+}
+
+.boxes .box.box4 {
     background-color: var(--primary-color);
 }
 
