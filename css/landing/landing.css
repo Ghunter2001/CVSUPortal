@@ -89,7 +89,7 @@ nav .navigation ul li a:hover{
     color: #fff;
     font-size: 2.2rem;
     line-height: 1px ;
-    margin-right: 64%;
+    margin-right: 45%;
     margin-top: 47%;
     margin-bottom: 2%;
 
@@ -101,12 +101,11 @@ nav .navigation ul li a:hover{
     font-size: 1.2rem;
     line-height: 25px ;
     text-align: left;
-    margin-right: 45%;
+    margin-right: 26%;
 }
 #home p2{
-    padding-right: 83%;
+    padding-right: 64%;
     padding-bottom: 40%;
-    color: #fff;
     color: #fff;
     font-size: 1.2rem;
     line-height: 25px ;
@@ -179,7 +178,7 @@ nav .navigation ul li a:hover{
 /*page 3rd section*/
 
 #Course {
-    padding: 8vw 8vw 0 8vw;
+    padding-top: 10%;
     text-align: center;
 }
 #Course .course-box{
@@ -188,7 +187,6 @@ nav .navigation ul li a:hover{
 }
 #Course .courses{
     text-align: center;
-    background: #f9f9ff;
     height: 100%;
 }
 #Course .course-box video{
