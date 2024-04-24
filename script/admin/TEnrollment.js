@@ -42,13 +42,16 @@ function toggleEntryOption() {
     var entry = document.getElementById("entry");
     var strandOptions = document.getElementById("strandOptions");
     var courseOptions = document.getElementById("courseOptions");
-    if (entry.value === "New Student") {
+    if (entry.value === "New") {
         strandOptions.style.display = "block",
             courseOptions.style.display = "block";
+    } else if (entry.value === "Regular") {
+        strandOptions.style.display = "none";
+        courseOptions.style.display = "none";
     } else if (entry.value === "Transferee") {
         strandOptions.style.display = "none";
         courseOptions.style.display = "block";
-    } else if (entry.value === "2nd Courser") {
+    } else if (entry.value === "Returnee") {
         strandOptions.style.display = "none";
         courseOptions.style.display = "block";
     } else {
@@ -115,11 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function generateNumbers() {
     // Get current year
     var currentYear = new Date().getFullYear().toString();
-    // Generate the number with current year and consecutive digits
-    var generatedNumber = currentYear;
-    for (var i = 1; i <= 5; i++) {
-        generatedNumber += i.toString();
-    }
+    // Generate a random number between 10000 and 99999
+    var randomNumber = Math.floor(Math.random() * 90000) + 10000;
+    // Combine current year and random number
+    var generatedNumber = currentYear + randomNumber.toString();
     // Update the input field with the generated number
     document.getElementById("snumber").value = generatedNumber;
 }
@@ -128,7 +130,71 @@ function generateNumbers() {
 
 
 
+document.getElementById("submitBTN").addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    var snumber = document.getElementById("snumber").value.trim();
+    var lname = document.getElementById("lname").value.trim();
+    var fname = document.getElementById("fname").value.trim();
+    var mname = document.getElementById("mname").value.trim();
+    var entry = document.getElementById("entry").value.trim();
+    var CboCourse = document.getElementById("CboCourse").value.trim();
+
+    var isValid = true;
+    if (snumber === "") {
+        isValid = false;
+    }
+    if (lname === "") {
+        isValid = false;
+    }
+    if (fname === "") {
+        isValid = false;
+    }
+    if (mname === "") {
+        isValid = false;
+    }
+    if (entry === "") {
+        isValid = false;
+    }
+    if (CboCourse === "") {
+        isValid = false;
+    }
 
 
+    // Submit the form if valid
+    if (isValid) {
+        document.getElementById("enroll").submit();
+    } else {
+        alert("Please fill out all required fields.");
+    }
+});
+
+
+
+
+//FOR DELETION
+function deleteRow(student_number) {
+    // Ask for confirmation
+    if (confirm("Are you sure you want to remove this row?")) {
+        fetch('/deleteEnroll', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ student_number }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log('Row deleted successfully');
+                window.location.href = "/enrollment"
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+            });
+    }
+}
 
 

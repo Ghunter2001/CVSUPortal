@@ -146,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div id="myModal" class="myModal">
                 <div class="modal-content">
@@ -168,71 +168,71 @@
                     </div>
 
 
-                    <form>
-                        <div class="twocol">
-                            <div class="newStudentFom">
+                    <form action="addEnroll" id="enroll" method="post">
 
-                                <div class="input">
-                                    <label for="lrn">LRN:</label>
-                                    <input type="text" id="lrn" name="lrn" readonly>
-                                </div>
-                                <label for="lrn">Student Number:</label>
-                                <div class="input">
-                                    <input class="input-fields" type="text" id="snumber" name="snumber"
-                                        placeholder="e.g. 202112345">
-                                    <button type="submit" onclick="generateNumbers()">Generate</button>
-                                </div>
+                        <div class="newStudentFom">
 
-                                <label for="lname">Last Name:</label>
-                                <input type="text" id="lname" name="lname">
-                                <label for="fname">First Name:</label>
-                                <input type="text" id="fname" name="fname">
-                                <label for="mname">Middle Name:</label>
-                                <input type="text" id="mname" name="mname">
-
-                                <label for="entry">Entry:</label>
-                                <div class="input">
-                                    <select class="input-fields" id="entry" name="entry" onchange="toggleEntryOption()">
-                                        <option value="">Please Select</option>
-                                        <option value="New Student">New</option>
-                                        <option value="New Student">Regular</option>
-                                        <option value="Transferee">Transferee</option>
-                                        <option value="2nd Courser">Returnee</option>
-                                    </select>
-                                </div>
-                                <div class="strandOptions" id="strandOptions">
-                                    <label for="strand">SHS Strand:</label>
-                                    <div class="input">
-                                        <select class="input-fields" id="strand" name="strand">
-                                            <option value="">Please Select</option>
-                                            <option value="TVL">TVL</option>
-                                            <option value="ABM">ABM</option>
-                                            <option value="GAS">GAS</option>
-                                            <option value="HUMSS">HUMSS</option>
-                                            <option value="STEM">STEM</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="courseOptions" id="courseOptions">
-                                    <label for="CboCourse">Preferred Course:</label>
-                                    <div class="input">
-                                        <select class="input-fields" id="CboCourse" name="CboCourse">
-                                            <option value="">Please Select</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn" id="submitBTN">Submit</button>
+                            <div class="input">
+                                <label for="lrn">LRN:</label>
+                                <input type="text" id="lrn" name="lrn" readonly>
+                            </div>
+                            <label for="lrn">Student Number:</label>
+                            <div class="input">
+                                <input class="input-fields" type="text" id="snumber" name="snumber"
+                                    placeholder="e.g. 202112345">
+                                <button type="button" onclick="generateNumbers()">Generate</button>
                             </div>
 
+                            <label for="lname">Last Name:</label>
+                            <input type="text" id="lname" name="lname">
+                            <label for="fname">First Name:</label>
+                            <input type="text" id="fname" name="fname">
+                            <label for="mname">Middle Name:</label>
+                            <input type="text" id="mname" name="mname">
+
+                            <label for="entry">Entry:</label>
+                            <div class="input">
+                                <select class="input-fields" id="entry" name="entry" onchange="toggleEntryOption()">
+                                    <option value="">Please Select</option>
+                                    <option value="New">New</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Transferee">Transferee</option>
+                                    <option value="Returnee">Returnee</option>
+                                </select>
+                            </div>
+                            <div class="strandOptions" id="strandOptions">
+                                <label for="strand">SHS Strand:</label>
+                                <div class="input">
+                                    <select class="input-fields" id="strand" name="strand">
+                                        <option value="">Please Select</option>
+                                        <option value="TVL">TVL</option>
+                                        <option value="ABM">ABM</option>
+                                        <option value="GAS">GAS</option>
+                                        <option value="HUMSS">HUMSS</option>
+                                        <option value="STEM">STEM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="courseOptions" id="courseOptions">
+                                <label for="CboCourse">Preferred Course:</label>
+                                <div class="input">
+                                    <select class="input-fields" id="CboCourse" name="CboCourse">
+                                        <option value="">Please Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn" id="submitBTN">Submit</button>
                         </div>
+
+
                     </form>
                 </div>
-                
+
             </div>
         </div>
 
 
-        
+
 
     </div>
     </div>

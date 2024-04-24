@@ -152,6 +152,56 @@ app.get('/countInstructor', function (req, res) {
 
 //ENROLLMENT TAB
 //DISPLAY ENROLLED
+app.post("/addEnroll", async (req, res) => {
+  try {
+    const { snumber, lname, fname, mname, entry, CboCourse } = req.body;
+
+    if (snumber !== "" || lname !== "" || fname !== "" || mname !== "" || entry !== "" || CboCourse !== "") {
+      pool.getConnection((err, connect) => {
+        if (err) {
+          console.error('Error connecting to database: ' + err.stack);
+          return;
+        }
+
+        connect.query("SELECT * FROM enrolledstudents WHERE student_number = ?",[snumber], (err, result) => {
+          if (err) throw err;
+  
+          if (result.length > 0) {
+            res.send(`
+                        <script>
+                          alert("Already Exist");
+                          window.location.href = "/enrollment"; 
+                        </script>
+                      `);
+            connect.release();
+          } else {
+            connect.query("INSERT INTO enrolledstudents(student_number, course, lname, fname, mname,type) VALUES(?, ?, ?, ?, ?, ?)", [snumber, CboCourse, lname, fname, mname,entry], (err, result) => {
+              if (err) throw err;
+  
+              res.send(`
+                        <script>
+                          alert("New Student Added.");
+                          window.location.href = "/enrollment"; 
+                        </script>
+                      `);
+              connect.release();
+            }); 
+          }
+        });
+
+      });
+    } else {
+      console.log("Input Details");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+
+
+
 app.get("/enrollment", function (req, res) {
 
   pool.query("SELECT * FROM enrolledstudents", function (err, result) {
@@ -227,6 +277,23 @@ function generateTableEnrolled(data, callback) {
 
   callback(tableEnrolled);
 }
+
+
+//DELETION 
+app.post('/deleteEnroll', function (req, res) {
+  const snumber = req.body.student_number;
+
+  const queryString = 'UPDATE enrolledstudents SET status = "DROPPED" WHERE student_number = ?';
+  pool.query(queryString, [snumber], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error deleting row');
+    }
+    console.log('Row deleted');
+
+    res.status(200).send('Row deleted successfully');
+  });
+});
 
 
 //SEARCH ENROLLED
