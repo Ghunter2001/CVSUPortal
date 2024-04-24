@@ -176,14 +176,20 @@
                                     <label for="lrn">LRN:</label>
                                     <input type="text" id="lrn" name="lrn" readonly>
                                 </div>
-                                <label for="snumber">Student Number:</label>
+                                <label for="lrn">Student Number:</label>
                                 <div class="input">
                                     <input class="input-fields" type="text" id="snumber" name="snumber"
                                         placeholder="e.g. 202112345">
-                                    <button onclick="generateNumbers()">Generate</button>
+                                    <button type="submit" onclick="generateNumbers()">Generate</button>
                                 </div>
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name">
+
+                                <label for="lname">Last Name:</label>
+                                <input type="text" id="lname" name="lname">
+                                <label for="fname">First Name:</label>
+                                <input type="text" id="fname" name="fname">
+                                <label for="mname">Middle Name:</label>
+                                <input type="text" id="mname" name="mname">
+
                                 <label for="entry">Entry:</label>
                                 <div class="input">
                                     <select class="input-fields" id="entry" name="entry" onchange="toggleEntryOption()">
@@ -219,8 +225,9 @@
                             </div>
 
                         </div>
+                    </form>
                 </div>
-                </form>
+                
             </div>
         </div>
 

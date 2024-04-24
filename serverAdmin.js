@@ -148,7 +148,7 @@ app.get('/countInstructor', function (req, res) {
 
 
 //ENROLLMENT TAB
-
+//DISPLAY ENROLLED
 app.get("/enrollment", function (req, res) {
 
   pool.query("SELECT * FROM enrolledstudents", function (err, result) {
@@ -191,11 +191,8 @@ function generateTableEnrolled(data, callback) {
             <th>Last Name</th>
             <th>First Name</th>
             <th>Middle Name</th>
-            <th>Contact Number</th>
             <th>Sex</th>
-            <th>Birthdate</th>
             <th>Email Address</th>
-            <th>Address</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -213,11 +210,8 @@ function generateTableEnrolled(data, callback) {
             <td>${row.lname}</td>
             <td>${row.fname}</td>
             <td>${row.mname}</td>
-            <td>${row.cp}</td>
             <td>${row.sex}</td>
-            <td>${row.birthdate}</td>
             <td>${row.email}</td>
-            <td>${row.address}</td>
             <td>${row.status}</td>
           </tr>`;
   }
@@ -232,10 +226,9 @@ function generateTableEnrolled(data, callback) {
 }
 
 
+//SEARCH ENROLLED
 app.get("/searchEnroll", function (req, res) {
-
   const searchTerm = req.query.search;
-
 
   pool.query('SELECT * FROM enrolledstudents WHERE student_number = ?', [searchTerm], function (err, result) {
     if (err) {
@@ -249,15 +242,93 @@ app.get("/searchEnroll", function (req, res) {
       return res.send("<p>No Data Found</p>"); // No data found, send custom message
     }
 
-
     generateTableEnrolled(data, function (tableEnrolled) {
-
-
       res.send(tableEnrolled);
-
     });
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+//SEARCH REGISTER STUDENTS
+app.get("/searchRegister", function (req, res) {
+  const searchStudents = req.query.searchStudents; // Assuming lrn is sent as a query parameter
+
+  pool.query('SELECT * FROM details_students WHERE lrn = ?', [searchStudents], function (err, result) {
+      if (err) {
+          console.error(err);
+          return res.status(500).send("Database query error");
+      }
+
+      // Assuming there's only one result for a given LRN
+      const foundStudent = result[0];
+
+      if (foundStudent) {
+          res.json(foundStudent); // Return the found student as JSON response
+      } else {
+          res.status(404).send('Student not found');
+      }
+  });
+});
+
+
+// //ENROLLING STUDENTS
+// app.post("/addEnroll", (req, res) => {
+//   const { snumber, lname, fname, mname, entry, strandOptions, CboLab, prereq } = req.body;
+
+//   if (CboCourse !== "" || subCode !== "" || subDesc !== "" || CboYear !== "" || CboSem !== "" || CboLec !== "" || CboLab !== "" || prereq !== "") {
+//     pool.getConnection((err, connect) => {
+//       if (err) {
+//         console.error('Error connecting to database: ' + err.stack);
+//         return;
+//       }
+
+
+//       connect.query("SELECT * FROM subject WHERE subcode= ?", [subCode], (err, result) => {
+//         if (err) throw err;
+
+//         if (result.length > 0) {
+//           res.send(`
+//                       <script>
+//                         alert("Already Exist");
+//                         window.location.href = "/subjects"; 
+//                       </script>
+//                     `);
+//           connect.release();
+//         } else {
+//           connect.query("INSERT INTO subject(course, subcode, description, yrlvl, sem, unitLec, unitLab, prerequisite) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [CboCourse, subCode, subDesc, CboYear, CboSem, CboLec, CboLab, prereq], (err, result) => {
+//             if (err) throw err;
+
+//             res.send(`
+//                       <script>
+//                         alert("New Section Added.");
+//                         window.location.href = "/subjects"; 
+//                       </script>
+//                     `);
+//             connect.release();
+//           });
+//         }
+//       });
+
+//     });
+//   } else {
+//     console.log("Input Details");
+//   }
+// });
+
+
+
+
 
 
 
@@ -957,6 +1028,12 @@ app.post("/addstudentForm", (req, res) => {
 
 
 
+
+
+
+
+
+
 app.get("/students", function (req, res) {
 
   pool.query("SELECT * FROM details_students", function (err, result) {
@@ -1004,7 +1081,6 @@ function generateTableStudent(data, callback) {
             <th>Email Address</th>
             <th>Address</th>
             <th>Status</th>
-            <th>Role</th>
           </tr>
         </thead>
         <tbody>`;
@@ -1026,9 +1102,6 @@ function generateTableStudent(data, callback) {
             <td>${row.email}</td>
             <td>${row.address}</td>
             <td>${row.Status}</td>
-            <td>${row.role}</td>
-            
-            
           </tr>`;
   }
 

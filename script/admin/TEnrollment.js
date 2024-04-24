@@ -59,13 +59,10 @@ function toggleEntryOption() {
 
 
 
-
-
-
 function fetchEnroll() {
 
     const searchTerm = document.getElementById("search").value;
-    
+
     fetch(`/searchEnroll?search=${searchTerm}`)
         .then(response => response.text())
         .then(data => {
@@ -74,42 +71,64 @@ function fetchEnroll() {
         .catch(error => console.error('Error fetching schedule:', error));
 }
 
-// Fetch schedule on page load
 window.onbeforeunload = fetchEnroll;
 
 
 
 
+//SEARCH NEW STUDENTS
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchStudents');
+    const submitBtn = document.getElementById('submitBTN');
+    const lrnInput = document.getElementById('lrn');
+    const lnameInput = document.getElementById('lname');
+    const fnameInput = document.getElementById('fname');
+    const mnameInput = document.getElementById('mname');
+
+    submitBtn.addEventListener('click', () => {
+        const lrn = searchInput.value;
+
+        fetch(`/searchRegister?searchStudents=${lrn}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Student not found');
+                }
+                return response.json();
+            })
+            .then(student => {
+
+                lrnInput.value = student.lrn;
+                lnameInput.value = student.lname;
+                fnameInput.value = student.fname;
+                mnameInput.value = student.mname;
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+            });
+    });
+});
 
 
 
-
-
-
-function updateDateTime() {
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentDate = new Date();
-
-    const weekdayElement = document.getElementById('weekday');
-    const dateElement = document.getElementById('date');
-
-    const weekday = daysOfWeek[currentDate.getDay()];
-    const month = months[currentDate.getMonth()];
-    const day = currentDate.getDate();
-    const year = currentDate.getFullYear();
-
-    const formattedDate = month + ' ' + day + ', ' + year;
-
-    weekdayElement.textContent = weekday;
-    dateElement.textContent = formattedDate;
+function generateNumbers() {
+    // Get current year
+    var currentYear = new Date().getFullYear().toString();
+    // Generate the number with current year and consecutive digits
+    var generatedNumber = currentYear;
+    for (var i = 1; i <= 5; i++) {
+        generatedNumber += i.toString();
+    }
+    // Update the input field with the generated number
+    document.getElementById("snumber").value = generatedNumber;
 }
 
-// Update time initially
-updateDateTime();
 
-// Update time every second
-setInterval(updateDateTime, 1000);
+
+
+
+
 
 
 
