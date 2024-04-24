@@ -90,11 +90,10 @@ app.get("/requirements", function (req, res) {
 
 
 
+
 app.get("/stud", (req, res) => {
   res.sendFile(__dirname + "/pages/admission/login.html");
 });
-
-
 
 app.get("/dashboard", function (req, res) {
   res.sendFile(__dirname + "/pages/students/dashboard.html");
