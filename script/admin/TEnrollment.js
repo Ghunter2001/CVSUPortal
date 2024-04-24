@@ -44,7 +44,7 @@ function toggleEntryOption() {
     var courseOptions = document.getElementById("courseOptions");
     if (entry.value === "New Student") {
         strandOptions.style.display = "block",
-        courseOptions.style.display = "block";
+            courseOptions.style.display = "block";
     } else if (entry.value === "Transferee") {
         strandOptions.style.display = "none";
         courseOptions.style.display = "block";
@@ -56,6 +56,30 @@ function toggleEntryOption() {
         courseOptions.style.display = "none";
     }
 }
+
+
+
+
+
+
+function fetchEnroll() {
+
+    const searchTerm = document.getElementById("search").value;
+    
+    fetch(`/searchEnroll?search=${searchTerm}`)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("table").innerHTML = data;
+        })
+        .catch(error => console.error('Error fetching schedule:', error));
+}
+
+// Fetch schedule on page load
+window.onbeforeunload = fetchEnroll;
+
+
+
+
 
 
 

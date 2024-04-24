@@ -183,9 +183,7 @@ function generateTableEnrolled(data, callback) {
       <table>
         <thead>
           <tr>
-            <th>
-              Action
-            </th>
+            <th>Action</th>
             <th>Student Number</th>
             <th>Course</th>
             <th>Year Level</th>
@@ -207,10 +205,7 @@ function generateTableEnrolled(data, callback) {
   for (const row of data) {
     tableEnrolled += `
           <tr>
-            <td>
-              <a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"</button>
-            </td>
-
+            <td><a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"></a></td>
             <td>${row.student_number}</td>
             <td>${row.course}</td>
             <td>${row.yrlvl}</td>
@@ -227,29 +222,46 @@ function generateTableEnrolled(data, callback) {
           </tr>`;
   }
 
+
   tableEnrolled += `
         </tbody>
       </table>
     </div>`;
 
-
   callback(tableEnrolled);
 }
 
-// Function to delete row
-function deleteRow(student_number) {
-  // Execute a query to delete the row with the given aycode
-  const queryString = "DELETE FROM enrolledstudents WHERE student_number = ?";
-  pool.query(queryString, [student_number], (err, result) => {
+
+app.get("/searchEnroll", function (req, res) {
+
+  const searchTerm = req.query.search;
+
+
+  pool.query('SELECT * FROM enrolledstudents WHERE student_number = ?', [searchTerm], function (err, result) {
     if (err) {
       console.error(err);
-      // Handle error response
-    } else {
-      // Row deleted successfully
-      // You can send a success response or handle it as needed
+      return res.status(500).send("Database query error");
     }
+
+    const data = result;
+
+    if (data.length === 0) {
+      return res.send("<p>No Data Found</p>"); // No data found, send custom message
+    }
+
+
+    generateTableEnrolled(data, function (tableEnrolled) {
+
+
+      res.send(tableEnrolled);
+
+    });
   });
-}
+});
+
+
+
+
 
 app.get("/enrollment", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/TEnrollment.html");
@@ -268,6 +280,8 @@ app.get("/schedule", function (req, res) {
 app.get("/history", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/RHistory.html");
 });
+
+
 
 
 
@@ -308,23 +322,23 @@ app.post("/addAcademicYear", async (req, res) => {
             connect.release();
           } else {
             connect.query(`UPDATE acadyear SET status = "CLOSE"`, (err, result) => {
-                if (err) {
-                  throw err;
-                } else {
-                  connect.query(`INSERT INTO acadyear (aycode, ayfrom, ayto, sem) VALUES (?, ?, ?, ?)`,
-                    [aycode, TXTAyFrom, TXTAyTo, CboSem], (err, result) => {
-                      if (err) throw err;
+              if (err) {
+                throw err;
+              } else {
+                connect.query(`INSERT INTO acadyear (aycode, ayfrom, ayto, sem) VALUES (?, ?, ?, ?)`,
+                  [aycode, TXTAyFrom, TXTAyTo, CboSem], (err, result) => {
+                    if (err) throw err;
 
-                      res.send(`
+                    res.send(`
                         <script>
                           alert("New Section Added.");
                           window.location.href = "/acadyear"; 
                         </script>
                       `);
-                    });
-                }
-                connect.release();
-              });
+                  });
+              }
+              connect.release();
+            });
           }
         });
 

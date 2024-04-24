@@ -126,9 +126,9 @@
                     <div class="head-title">
                         <h3>Student Enrolled List</h3>
                     </div>
-                    <form action="/searchEnroll" class="head-right" method="get" id="search">
+                    <form class="head-right" method="get">
                         <div class="button" name="searchBox" id="searchBox">
-                            <input type="search">
+                            <input type="search" name="search" id="search" onchange="fetchEnroll()">
                             <button type="submit" name="searchEnrolled" id="searchEnrolled">Search</button>
                             <button id="newButton" type="button">New</button>
                             <button id="cancelButton" type="button">Cancel</button>
@@ -141,7 +141,7 @@
             <div class="container">
                 <hr>
                 <div class="inCon">
-                    <div class="table">
+                    <div class="table" id="table">
                         {{TABLE_Enrolled}}
                     </div>
                 </div>
