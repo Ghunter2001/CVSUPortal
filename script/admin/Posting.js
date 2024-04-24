@@ -45,7 +45,45 @@ function deleteRow(NoticeTitle) {
     }
 }
 
+// document.getElementById("submitBTN").addEventListener("click", function (event) {
+//     event.preventDefault(); // Prevent form submission
 
+//     var pType = document.getElementById("pType").value.trim();
+//     var pDate = document.getElementById("pDate").value.trim();
+//     var pTime = document.getElementById("pTime").value.trim();
+//     var pTitle = document.getElementById("pTitle").value.trim();
+//     var pDesc = document.getElementById("pDesc").value.trim();
+//     var pCourse = document.getElementById("pCourse").value.trim();
+
+//     var isValid = true;
+//     if (pType === "") {
+//       isValid = false;
+//     }
+//     if (pDate === "") {
+//       isValid = false;
+//     }
+//     if (pTime === "") {
+//       isValid = false;
+//     }
+//     if (pTitle === "") {
+//       isValid = false;
+//     }
+//     if (pDesc === "") {
+//       isValid = false;
+//     }
+//     if (pCourse === "") {
+//       isValid = false;
+//     }
+
+//     // Submit the form if valid
+//     if (isValid) {
+
+//       document.getElementById("postform").submit();
+//     } else {
+//       alert("Please fill out all required fields.");
+//     }
+//   });
+  
 
 
 

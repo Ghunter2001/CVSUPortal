@@ -163,9 +163,9 @@ app.post("/addEnroll", async (req, res) => {
           return;
         }
 
-        connect.query("SELECT * FROM enrolledstudents WHERE student_number = ?",[snumber], (err, result) => {
+        connect.query("SELECT * FROM enrolledstudents WHERE student_number = ?", [snumber], (err, result) => {
           if (err) throw err;
-  
+
           if (result.length > 0) {
             res.send(`
                         <script>
@@ -175,9 +175,9 @@ app.post("/addEnroll", async (req, res) => {
                       `);
             connect.release();
           } else {
-            connect.query("INSERT INTO enrolledstudents(student_number, course, lname, fname, mname,type) VALUES(?, ?, ?, ?, ?, ?)", [snumber, CboCourse, lname, fname, mname,entry], (err, result) => {
+            connect.query("INSERT INTO enrolledstudents(student_number, course, lname, fname, mname,type) VALUES(?, ?, ?, ?, ?, ?)", [snumber, CboCourse, lname, fname, mname, entry], (err, result) => {
               if (err) throw err;
-  
+
               res.send(`
                         <script>
                           alert("New Student Added.");
@@ -185,7 +185,7 @@ app.post("/addEnroll", async (req, res) => {
                         </script>
                       `);
               connect.release();
-            }); 
+            });
           }
         });
 
@@ -322,19 +322,19 @@ app.get("/searchRegister", function (req, res) {
   const searchStudents = req.query.searchStudents; // Assuming lrn is sent as a query parameter
 
   pool.query('SELECT * FROM details_students WHERE lrn = ?', [searchStudents], function (err, result) {
-      if (err) {
-          console.error(err);
-          return res.status(500).send("Database query error");
-      }
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database query error");
+    }
 
-      // Assuming there's only one result for a given LRN
-      const foundStudent = result[0];
+    // Assuming there's only one result for a given LRN
+    const foundStudent = result[0];
 
-      if (foundStudent) {
-          res.json(foundStudent); // Return the found student as JSON response
-      } else {
-          res.status(404).send('Student not found');
-      }
+    if (foundStudent) {
+      res.json(foundStudent); // Return the found student as JSON response
+    } else {
+      res.status(404).send('Student not found');
+    }
   });
 });
 
@@ -361,9 +361,9 @@ app.post("/addSchedTemplate", async (req, res) => {
           return;
         }
 
-        connect.query("SELECT * FROM templatesched WHERE templateName = ?",[template], (err, result) => {
+        connect.query("SELECT * FROM templatesched WHERE templateName = ?", [template], (err, result) => {
           if (err) throw err;
-  
+
           if (result.length > 0) {
             res.send(`
                         <script>
@@ -375,7 +375,7 @@ app.post("/addSchedTemplate", async (req, res) => {
           } else {
             connect.query("INSERT INTO templatesched(templateName, adviser, subcode, timeIn, timeOut) VALUES(?, ?, ?, ?, ?)", [template, adviser, subject, timeIn, timeOut], (err, result) => {
               if (err) throw err;
-  
+
               res.send(`
                         <script>
                           alert("New Sched Template Added.");
@@ -383,7 +383,7 @@ app.post("/addSchedTemplate", async (req, res) => {
                         </script>
                       `);
               connect.release();
-            }); 
+            });
           }
         });
 
@@ -477,9 +477,9 @@ app.post("/addSched", async (req, res) => {
           return;
         }
 
-        connect.query("SELECT * FROM createsched WHERE tempCreated = ?",[tempCreated], (err, result) => {
+        connect.query("SELECT * FROM createsched WHERE tempCreated = ?", [tempCreated], (err, result) => {
           if (err) throw err;
-  
+
           if (result.length > 0) {
             res.send(`
                         <script>
@@ -495,7 +495,7 @@ app.post("/addSched", async (req, res) => {
                 res.status(500).send('Error inserting schedule into database');
                 return;
               }
-    
+
               res.send(`
                 <script>
                   alert("New Schedule Added.");
@@ -613,7 +613,7 @@ app.get('/adviserOption', (req, res) => {
       console.error('Error fetching course:', err);
       return res.status(500).json({ error: 'Error fetching credit units' });
     }
-    const adviser = result.map(row => ({ value: row.fname + " " + row.lname, text:  row.fname + " " + row.lname }));
+    const adviser = result.map(row => ({ value: row.fname + " " + row.lname, text: row.fname + " " + row.lname }));
     res.json(adviser);
   });
 });
@@ -627,7 +627,7 @@ app.get('/subjectOption', (req, res) => {
       console.error('Error fetching course:', err);
       return res.status(500).json({ error: 'Error fetching credit units' });
     }
-    const subject = result.map(row => ({ value: row.subcode, text:  row.subcode }));
+    const subject = result.map(row => ({ value: row.subcode, text: row.subcode }));
     res.json(subject);
   });
 });
@@ -641,7 +641,7 @@ app.get('/acadOption', (req, res) => {
       console.error('Error fetching course:', err);
       return res.status(500).json({ error: 'Error fetching credit units' });
     }
-    const aycode = result.map(row => ({ value: row.aycode, text:  row.aycode }));
+    const aycode = result.map(row => ({ value: row.aycode, text: row.aycode }));
     res.json(aycode);
   });
 });
@@ -654,7 +654,7 @@ app.get('/tempOption', (req, res) => {
       console.error('Error fetching course:', err);
       return res.status(500).json({ error: 'Error fetching credit units' });
     }
-    const temp = result.map(row => ({ value: row.templateName, text:  row.templateName }));
+    const temp = result.map(row => ({ value: row.templateName, text: row.templateName }));
     res.json(temp);
   });
 });
@@ -668,7 +668,7 @@ app.get('/advisoryOption', (req, res) => {
       console.error('Error fetching course:', err);
       return res.status(500).json({ error: 'Error fetching credit units' });
     }
-    const temp = result.map(row => ({ value: row.yrlvl + "-" + row.sec, text:  row.yrlvl + "-" + row.sec }));
+    const temp = result.map(row => ({ value: row.yrlvl + "-" + row.sec, text: row.yrlvl + "-" + row.sec }));
     res.json(temp);
   });
 });
@@ -1569,14 +1569,14 @@ app.post('/archiveTeacher', function (req, res) {
 
 app.get('/advisoryOption', (req, res) => {
   const queryString = 'SELECT yrlvl,sec FROM section';
-  
+
 
   pool.query(queryString, (err, result) => {
     if (err) {
       console.error('Error fetching course:', err);
       return res.status(500).json({ error: 'Error fetching credit units' });
     }
-    const advisory = result.map(row => ({ value: row.yrlvl +row.sec, text: row.yrlvl + "-" +row.sec}));
+    const advisory = result.map(row => ({ value: row.yrlvl + row.sec, text: row.yrlvl + "-" + row.sec }));
     res.json(advisory);
   });
 });
@@ -1734,10 +1734,10 @@ app.get("/archiveSelector", function (req, res) {
 
 
 app.post("/postForm", (req, res) => {
-  const { pType, pDate, pTime, pTitle, pDesc } = req.body;
+  const { pType, pDate, pTime, pTitle, pDesc, pCourse } = req.body;
 
 
-  if (pType !== "" || pDate !== "" || pTime !== "" || pTitle !== "" || pDesc !== "") {
+  if (pType !== "" || pDate !== "" || pTime !== "" || pTitle !== "" || pDesc !== "" || pCourse !== "") {
     pool.getConnection((err, connect) => {
       if (err) {
         console.error('Error connecting to database: ' + err.stack);
@@ -1745,7 +1745,7 @@ app.post("/postForm", (req, res) => {
       }
 
 
-      connect.query("SELECT * FROM notice WHERE NoticeTitle= ?", [courseCode], (err, result) => {
+      connect.query("SELECT * FROM notice WHERE NoticeTitle= ?", [pTitle], (err, result) => {
         if (err) throw err;
 
         if (result.length > 0) {
@@ -1757,7 +1757,7 @@ app.post("/postForm", (req, res) => {
                     `);
           connect.release();
         } else {
-          connect.query("INSERT INTO notice(NoticeTitle, NoticeContent) VALUES(?, ?)", [pTitle, pDesc], (err, result) => {
+          connect.query("INSERT INTO notice(NoticeTitle, NoticeContent, CourseID, PostedDate, TimePosted, NoticeType) VALUES(?, ?, ?, ?, ?, ?)", [pTitle, pDesc, pCourse, pDate, pTime, pType], (err, result) => {
             if (err) throw err;
 
             res.send(`
@@ -1770,7 +1770,7 @@ app.post("/postForm", (req, res) => {
           });
         }
       });
-      
+
     });
   } else {
     console.log("Input Details");
@@ -1812,22 +1812,30 @@ function generateTableNotice(data, callback) {
       <table>
         <thead>
           <tr>
-            <th>pType</th>
-            <th>pDate</th>
-            <th>pTime</th>
-            <th>pTitle</th>
-            <th>pDesc</th>
+          <th>Notice Type</th>
+            <th>Notice Courses</th>
+            <th>Date Posted</th>
+            <th>Time Posted</th>
+            <th>Notice Title</th>
+            <th>Notice Description</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>`;
 
-
   for (const row of data) {
     tableNotice += `
           <tr>
+            <td>${row.NoticeType}</td>
+            <td>${row.CourseID}</td>
+            <td>${row.PostedDate}</td>  
+            <td>${row.TimePosted}</td>
             <td>${row.NoticeTitle}</td>
-            <td>${row.	NoticeContent}</td>
+            <td>${row.NoticeContent}</td>
+
+
+
+
             <td>
               <a onclick="deleteRow('${row.NoticeTitle}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
@@ -1847,7 +1855,7 @@ function generateTableNotice(data, callback) {
 app.post('/NoticeDelete', function (req, res) {
   const NoticeTitle = req.body.NoticeTitle;
 
-  const queryString = 'DELETE FROM course WHERE NoticeTitle = ?';
+  const queryString = 'DELETE FROM notice WHERE NoticeTitle = ?';
   pool.query(queryString, [NoticeTitle], (err, result) => {
     if (err) {
       console.error(err);
