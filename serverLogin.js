@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 
 
-app.get("/login.html", (req, res) => {
+app.get("/admin", (req, res) => {
     res.sendFile(__dirname + "/login.html");
 });
 
@@ -13,7 +13,7 @@ app.get("/login.html", (req, res) => {
 // Logout endpoint
 app.get("/logout", (req, res) => {
     // req.session.destroy();
-    res.redirect("/login.html");
+    res.redirect("/admin");
 });
 
 // LOGIN PAGE

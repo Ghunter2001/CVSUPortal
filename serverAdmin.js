@@ -199,7 +199,6 @@ function generateTableEnrolled(data, callback) {
             <th>Email Address</th>
             <th>Address</th>
             <th>Status</th>
-            <th>Role</th>
           </tr>
         </thead>
         <tbody>`;
@@ -225,7 +224,6 @@ function generateTableEnrolled(data, callback) {
             <td>${row.email}</td>
             <td>${row.address}</td>
             <td>${row.status}</td>
-            <td>${row.role}</td>
           </tr>`;
   }
 
