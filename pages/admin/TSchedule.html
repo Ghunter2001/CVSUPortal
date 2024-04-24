@@ -121,11 +121,125 @@
 
         <div class="dash-content">
             <div class="container">
+                <div class="containerIn">
+                    <div class="header">
+                        <h3>Add Schedule Template </h3>
+                    </div>
+                    <hr>
+                    <form action="addSchedTemplate" id="schedTemp" method="post">
+                        <div class="inCon  ">
+
+                            <div class="Fields">
+                                <span>Template Name</span>
+                                <input class="input-fields" type="text" id="template" name="template">
+                            </div>
+
+                            <div class="Fields">
+                                <span>Adviser</span>
+                                <select class="input-fields" id="adviser" name="adviser">
+                                    <option value="">Please Select</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="Fields">
+                                <span>Subject</span>
+                                <select class="input-fields" id="subject" name="subject">
+                                    <option value="">Please Select</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="Fields">
+                                <span>Time In / Time Out</span>
+                                <div class="twoblock">
+                                    <input class="input-fields" type="time" id="timeIn" name="timeIn">
+                                    -
+                                    <input class="input-fields" type="time" id="timeOut" name="timeOut">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn" id="submitbtn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+
                 
+                <div class="containerNext">
+                    <div class="header">
+                        <h3>Set Schedule</h3>
+                    </div>
+                    <hr>
+                    <form action="addSched" id="addSched" method="post">
+                        <div class="inCon  ">
+
+                            <div class="Fields">
+                                <span>Academic Year</span>
+                                <select class="input-fields" id="acadyear" name="acadyear">
+                                    <option value="">Please Select</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="Fields">
+                                <span>Template Created</span>
+                                <select class="input-fields" id="tempCreated" name="tempCreated">
+                                    <option value="">Please Select</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="twoblock">
+                                <form id="checkboxForm">
+                                    <span>Date:</span>
+                                    <input class="input-fields" type="checkbox" id="monday" name="days" value="M">
+                                    <label for="monday">M</label>
+                                
+                                    <input class="input-fields" type="checkbox" id="tuesday" name="days" value="T">
+                                    <label for="tuesday">T</label>
+                                
+                                    <input class="input-fields" type="checkbox" id="wednesday" name="days" value="W">
+                                    <label for="wednesday">W</label>
+                                
+                                    <input class="input-fields" type="checkbox" id="thursday" name="days" value="TH">
+                                    <label for="thursday">TH</label>
+                                
+                                    <input class="input-fields" type="checkbox" id="friday" name="days" value="F">
+                                    <label for="friday">F</label>
+                                
+                                    <input class="input-fields" type="checkbox" id="saturday" name="days" value="Saturday">
+                                    <label for="saturday">S</label>
+                                </form>
+                                
+                            </div>
+
+
+                            <div class="Fields">
+                                <span>Advisory</span>
+                                <select class="input-fields" id="advisory" name="advisory">
+                                    <option value="">Please Select</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <button type="submit" class="btn" id="submitBTN">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
 
             <div class="conTable">
-                
+                <hr>
+                <div class="table">
+                    {{TABLE_Schedule}}
+                </div>
 
             </div>
 
@@ -138,7 +252,7 @@
 
 
 
-    <script src="script/admin/DataStudents.js"></script>
+    <script src="script/admin/TSchedule.js"></script>
     <script src="script/admin/main.js"></script>
 </body>
 

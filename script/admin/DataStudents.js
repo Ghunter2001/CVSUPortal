@@ -52,7 +52,7 @@ document.getElementById("submitBTN").addEventListener("click", function (event) 
 
 
 
-//FOR DELETION
+//FOR Archiviing
 function archiveRow(lrn) {
     if (confirm("Are you sure you want to archive this row?")) {
         fetch('/archive', {

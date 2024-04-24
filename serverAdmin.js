@@ -130,7 +130,7 @@ app.get('/countInstructor', function (req, res) {
     }
 
 
-    const query = 'SELECT COUNT(*) AS count FROM details_teachers';
+    const query = 'SELECT COUNT(*) AS count FROM faculty';
 
     connection.query(query, function (err, result) {
       connection.release(); // Release the connection
@@ -254,15 +254,6 @@ app.get("/searchEnroll", function (req, res) {
 
 
 
-
-
-
-
-
-
-
-
-
 //SEARCH REGISTER STUDENTS
 app.get("/searchRegister", function (req, res) {
   const searchStudents = req.query.searchStudents; // Assuming lrn is sent as a query parameter
@@ -285,56 +276,346 @@ app.get("/searchRegister", function (req, res) {
 });
 
 
-// //ENROLLING STUDENTS
-// app.post("/addEnroll", (req, res) => {
-//   const { snumber, lname, fname, mname, entry, strandOptions, CboLab, prereq } = req.body;
-
-//   if (CboCourse !== "" || subCode !== "" || subDesc !== "" || CboYear !== "" || CboSem !== "" || CboLec !== "" || CboLab !== "" || prereq !== "") {
-//     pool.getConnection((err, connect) => {
-//       if (err) {
-//         console.error('Error connecting to database: ' + err.stack);
-//         return;
-//       }
-
-
-//       connect.query("SELECT * FROM subject WHERE subcode= ?", [subCode], (err, result) => {
-//         if (err) throw err;
-
-//         if (result.length > 0) {
-//           res.send(`
-//                       <script>
-//                         alert("Already Exist");
-//                         window.location.href = "/subjects"; 
-//                       </script>
-//                     `);
-//           connect.release();
-//         } else {
-//           connect.query("INSERT INTO subject(course, subcode, description, yrlvl, sem, unitLec, unitLab, prerequisite) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [CboCourse, subCode, subDesc, CboYear, CboSem, CboLec, CboLab, prereq], (err, result) => {
-//             if (err) throw err;
-
-//             res.send(`
-//                       <script>
-//                         alert("New Section Added.");
-//                         window.location.href = "/subjects"; 
-//                       </script>
-//                     `);
-//             connect.release();
-//           });
-//         }
-//       });
-
-//     });
-//   } else {
-//     console.log("Input Details");
-//   }
-// });
-
-
-
 //ENROLLMENT END
 
 
 
+
+
+
+
+//SCHEDULING TAB
+
+
+app.post("/addSchedTemplate", async (req, res) => {
+  try {
+    const { template, adviser, subject, timeIn, timeOut } = req.body;
+
+    if (template !== "" || adviser !== "" || subject !== "" || timeIn !== "" || timeOut !== "") {
+      pool.getConnection((err, connect) => {
+        if (err) {
+          console.error('Error connecting to database: ' + err.stack);
+          return;
+        }
+
+        connect.query("SELECT * FROM templatesched WHERE templateName = ?",[template], (err, result) => {
+          if (err) throw err;
+  
+          if (result.length > 0) {
+            res.send(`
+                        <script>
+                          alert("Already Exist");
+                          window.location.href = "/schedule"; 
+                        </script>
+                      `);
+            connect.release();
+          } else {
+            connect.query("INSERT INTO templatesched(templateName, adviser, subcode, timeIn, timeOut) VALUES(?, ?, ?, ?, ?)", [template, adviser, subject, timeIn, timeOut], (err, result) => {
+              if (err) throw err;
+  
+              res.send(`
+                        <script>
+                          alert("New Sched Template Added.");
+                          window.location.href = "/schedule"; 
+                        </script>
+                      `);
+              connect.release();
+            }); 
+          }
+        });
+
+      });
+    } else {
+      console.log("Input Details");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+
+
+
+
+app.get("/schedule", function (req, res) {
+  pool.query("SELECT templatesched.adviser, templatesched.subcode, templatesched.timeIn, templatesched.timeOut, createsched.days, createsched.advisory FROM templatesched INNER JOIN createsched ON templatesched.templateName = createsched.tempCreated", function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database query error");
+    }
+
+    const data = result; // Assuming result contains the data directly
+
+    generateTableSchedule(data, function (tableSchedule) {
+      fs.readFile(__dirname + "/pages/admin/TSchedule.html", "utf8", (err, fileData) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error reading file");
+        }
+
+        const updatedFileData = fileData.replace("{{TABLE_Schedule}}", tableSchedule);
+        res.send(updatedFileData);
+      });
+    });
+  });
+});
+
+function generateTableSchedule(data, callback) {
+  let tableSchedule = `
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Adviser</th>
+            <th>Subject Code</th>
+            <th>Advisory</th>
+            <th>Days</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+  for (const row of data) {
+    tableSchedule += `
+          <tr>
+            <td><a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"></a></td>
+            <td>${row.adviser}</td>
+            <td>${row.subcode}</td>
+            <td>${row.advisory}</td>
+            <td>${row.days}</td>
+            <td>${row.timeIn}</td>
+            <td>${row.timeOut}</td>
+          </tr>`;
+  }
+
+  tableSchedule += `
+        </tbody>
+      </table>
+    </div>`;
+
+  callback(tableSchedule);
+}
+
+
+
+
+app.post("/addSched", async (req, res) => {
+  try {
+    const { acadyear, tempCreated, advisory } = req.body;
+    const selectedDays = req.body.days;
+
+    if (acadyear !== "" || tempCreated !== "" || advisory !== "") {
+      pool.getConnection((err, connect) => {
+        if (err) {
+          console.error('Error connecting to database: ' + err.stack);
+          return;
+        }
+
+        connect.query("SELECT * FROM createsched WHERE tempCreated = ?",[tempCreated], (err, result) => {
+          if (err) throw err;
+  
+          if (result.length > 0) {
+            res.send(`
+                        <script>
+                          alert("Already Exist");
+                          window.location.href = "/schedule "; 
+                        </script>
+                      `);
+            connect.release();
+          } else {
+            connect.query("INSERT INTO createsched(acadyear, tempCreated, days ,advisory) VALUES(?, ?, ?, ?)", [acadyear, tempCreated, selectedDays.join(), advisory], (err, result) => {
+              if (err) {
+                console.error('Error inserting schedule into database: ' + err.stack);
+                res.status(500).send('Error inserting schedule into database');
+                return;
+              }
+    
+              res.send(`
+                <script>
+                  alert("New Schedule Added.");
+                  window.location.href = "/schedule"; 
+                </script>
+              `);
+              connect.release();
+            });
+          }
+        });
+
+      });
+    } else {
+      console.log("Input Details");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+
+
+app.get("/acadyear", function (req, res) {
+  pool.query("SELECT * FROM acadyear", function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database query error");
+    }
+
+    const data = result;
+
+    generateTableHTML(data, function (tableHTML) {
+      fs.readFile(__dirname + "/pages/admin/MAcadyear.html", "utf8", (err, fileData) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error reading file");
+        }
+
+        const updatedFileData = fileData.replace("{{TABLE_CONTENT}}", tableHTML);
+
+        res.send(updatedFileData);
+      });
+    });
+  });
+});
+
+function generateTableHTML(data, callback) {
+  let tableHTML = `
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Aycode</th>
+            <th>A.Y From</th>
+            <th>A.Y To</th>
+            <th>Semester</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+  for (const row of data) {
+    tableHTML += `
+          <tr>
+            <td>${row.aycode}</td>
+            <td>${row.ayfrom}</td>
+            <td>${row.ayto}</td>
+            <td>${row.sem}</td>
+            <td>${row.status}</td>
+            <td>
+              <a onclick="updateStatus('${row.aycode}')"><img src="/img/check.svg" alt="Open" </a>
+              <a onclick="deleteRow('${row.aycode}')"><img src="/img/delete.svg" alt="Delete" ></a>
+            </td>
+          </tr>`;
+  }
+
+  tableHTML += `
+        </tbody>
+      </table>
+    </div>`;
+
+  callback(tableHTML);
+}
+
+
+
+
+
+
+
+//DELETE DATA
+app.post('/deleteSub', function (req, res) {
+  const subcode = req.body.subcode;
+
+  const queryString = 'DELETE FROM subject WHERE subcode = ?';
+  pool.query(queryString, [subcode], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error deleting row');
+    }
+    console.log('Row deleted');
+
+    res.status(200).send('Row deleted successfully');
+  });
+});
+
+//Dropdown Data
+app.get('/adviserOption', (req, res) => {
+  const queryString = 'SELECT fname, lname FROM faculty';
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const adviser = result.map(row => ({ value: row.fname + " " + row.lname, text:  row.fname + " " + row.lname }));
+    res.json(adviser);
+  });
+});
+
+
+app.get('/subjectOption', (req, res) => {
+  const queryString = 'SELECT subcode FROM subject';
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const subject = result.map(row => ({ value: row.subcode, text:  row.subcode }));
+    res.json(subject);
+  });
+});
+
+
+app.get('/acadOption', (req, res) => {
+  const queryString = 'SELECT aycode FROM acadyear';
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const aycode = result.map(row => ({ value: row.aycode, text:  row.aycode }));
+    res.json(aycode);
+  });
+});
+
+app.get('/tempOption', (req, res) => {
+  const queryString = 'SELECT templateName FROM templatesched';
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const temp = result.map(row => ({ value: row.templateName, text:  row.templateName }));
+    res.json(temp);
+  });
+});
+
+
+app.get('/advisoryOption', (req, res) => {
+  const queryString = 'SELECT yrlvl,sec FROM section';
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const temp = result.map(row => ({ value: row.yrlvl + "-" + row.sec, text:  row.yrlvl + "-" + row.sec }));
+    res.json(temp);
+  });
+});
+
+
+
+
+
+
+//SCHEDULING END
 
 
 
@@ -1139,7 +1420,7 @@ app.post("/addTeachersForm", (req, res) => {
 
 app.get("/teachers", function (req, res) {
 
-  pool.query("SELECT * FROM details_teachers", function (err, result) {
+  pool.query("SELECT * FROM faculty", function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -1174,16 +1455,10 @@ function generateTableTeachers(data, callback) {
             <th>
               Action
             </th>
-            <th>ID Number</th>
-            <th>First Name</th>
-            <th>Middle Name</th>
-            <th>Last Name</th>
-            <th>Birtdate</th>
-            <th>Sex</th>
-            <th>Contact Number</th>
-            <th>Email Address</th>
-            <th>Address</th>
-            <th>Role</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Advisory</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>`;
@@ -1193,19 +1468,13 @@ function generateTableTeachers(data, callback) {
     tableTeachers += `
           <tr>
             <td>
-              <a onclick="deleteRow('${row.T_ID}')"><img src="/img/delete.svg" alt="Delete"</button>
+              <a onclick="archiveTeacher('${row.teacherID}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
 
-            <td>${row.T_ID}</td>
-            <td>${row.FirstName}</td>
-            <td>${row.MiddleName}</td>
-            <td>${row.LastName}</td>
-            <td>${row.BirthDate}</td>
-            <td>${row.Sex}</td>
-            <td>${row.ContactNumber}</td>
-            <td>${row.Email}</td>
-            <td>${row.Address}</td>
-            <td>${row.role}</td>
+            <td>${row.teacherID}</td>
+            <td>${row.fname} ${row.mname} ${row.lname}</td>
+            <td>${row.advisory}</td>
+            <td>${row.status}</td>
           </tr>`;
   }
 
@@ -1219,11 +1488,11 @@ function generateTableTeachers(data, callback) {
 }
 
 // Function to delete row
-app.post('/archive', function (req, res) {
-  const lrn = req.body.lrn;
+app.post('/archiveTeacher', function (req, res) {
+  const id = req.body.id;
 
-  const queryString = 'UPDATE details_students SET status = "INACTIVE" WHERE lrn = ?';
-  pool.query(queryString, [lrn], (err, result) => {
+  const queryString = 'UPDATE faculty SET status = "INACTIVE" WHERE lrn = ?';
+  pool.query(queryString, [id], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Error store row');
@@ -1235,6 +1504,19 @@ app.post('/archive', function (req, res) {
 });
 
 
+app.get('/advisoryOption', (req, res) => {
+  const queryString = 'SELECT yrlvl,sec FROM section';
+  
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const advisory = result.map(row => ({ value: row.yrlvl +row.sec, text: row.yrlvl + "-" +row.sec}));
+    res.json(advisory);
+  });
+});
 
 
 module.exports = app;

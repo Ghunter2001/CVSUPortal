@@ -132,7 +132,7 @@
                         <div class="Input">
                             <span class="id">ID Number:</span>
                             <input class="input-fields" type="text" id="output" name="output" placeholder="e.g. 202112345">
-                            <button onclick="generateNumbers()">Generate Numbers</button>
+                            <button type="submit" onclick="generateNumbers()">Generate</button>
                         </div>
 
                         <div class="Input">
@@ -152,34 +152,23 @@
                         </div>
 
                         <div class="Input">
-                            <span>Birth Date:</span>
-                            <input class="input-fields" type="date" id="bdate" name="bdate">
-                        </div>
-
-                        <div class="Input">
                             <span>Sex:</span>
                             <select class="input-fields" id="sex" name="sex">
+                                <option value="">Please Select</option>
                                 <option value="M">Male</option>
                                 <option value="F">Female</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
 
                         <div class="Input">
-                            <span>Contact Number:</span>
-                            <input class="input-fields" type="text" id="cp" name="cp" placeholder="09123456789">
+                            <span>Advisory:</span>
+                            <select class="input-fields" id="advisory" name="advisory">
+                                <option value="">Please Select</option>
+
+                            </select>
                         </div>
 
-                        <div class="Input">
-                            <span>Email Address:</span>
-                            <input class="input-fields" type="text" id="email" name="email"
-                                placeholder="namelastname@gmail.com">
-                        </div>
-
-                        <div class="Input">
-                            <span>Address:</span>
-                            <input class="input-fields" type="text" id="address" name="address"
-                                placeholder="e.g. Palladium St. San Nicolas 3">
-                        </div>
 
                         <button type="submit">Submit</button>
                     </div>
