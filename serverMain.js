@@ -75,10 +75,6 @@ app.get("/students", function (req, res) {
 });
 
 
-app.get("/history", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/RHistory.html");
-});
-
 app.get("/Archive", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/RArchive.html");
 });

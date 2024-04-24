@@ -204,7 +204,7 @@ app.post("/addEnroll", async (req, res) => {
 
 app.get("/enrollment", function (req, res) {
 
-  pool.query("SELECT * FROM enrolledstudents", function (err, result) {
+  pool.query('SELECT * FROM enrolledstudents WHERE status="ENROLLED"', function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -244,8 +244,6 @@ function generateTableEnrolled(data, callback) {
             <th>Last Name</th>
             <th>First Name</th>
             <th>Middle Name</th>
-            <th>Sex</th>
-            <th>Email Address</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -263,8 +261,6 @@ function generateTableEnrolled(data, callback) {
             <td>${row.lname}</td>
             <td>${row.fname}</td>
             <td>${row.mname}</td>
-            <td>${row.sex}</td>
-            <td>${row.email}</td>
             <td>${row.status}</td>
           </tr>`;
   }
@@ -1584,6 +1580,156 @@ app.get('/advisoryOption', (req, res) => {
     res.json(advisory);
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+app.get("/Archive", function (req, res) {
+
+  pool.query('SELECT * FROM enrolledstudents WHERE status="DROPPED"', function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database query error");
+    }
+
+    const data = result;
+
+
+    generateTableEArchive(data, function (tableArchive) {
+
+      fs.readFile(__dirname + "/pages/admin/RArchive.html", "utf8", (err, fileData) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error reading file");
+        }
+
+
+        const updatedFileData = fileData.replace("{{TABLE_CONTENT}}", tableArchive);
+
+        res.send(updatedFileData);
+      });
+    });
+  });
+});
+
+function generateTableEArchive(data, callback) {
+  let tableArchive = `
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Student Number</th>
+            <th>Course</th>
+            <th>Year Level</th>
+            <th>Section</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+
+  for (const row of data) {
+    tableArchive += `
+          <tr>
+            <td><a onclick="archiveRow('${row.student_number}')"><img src="/img/check.svg" alt="Unarchive"></a></td>
+            <td>${row.student_number}</td>
+            <td>${row.course}</td>
+            <td>${row.yrlvl}</td>
+            <td>${row.sec}</td>
+            <td>${row.lname}</td>
+            <td>${row.fname}</td>
+            <td>${row.mname}</td>
+            <td>${row.status}</td>
+          </tr>`;
+  }
+
+
+  tableArchive += `
+        </tbody>
+      </table>
+    </div>`;
+
+  callback(tableArchive);
+}
+
+app.post('/unArchive', function (req, res) {
+  const snumber = req.body.student_number;
+
+  const queryString = 'UPDATE enrolledstudents SET status = "ENROLLED" WHERE student_number = ?';
+  pool.query(queryString, [snumber], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error deleting row');
+    }
+    console.log('Row deleted');
+
+    res.status(200).send('Row deleted successfully');
+  });
+});
+
+
+
+app.get("/archiveSelector", function (req, res) {
+  const selector = req.query.selector;
+
+  const selectTerm = `%${selector}%`;
+  const values = [selectTerm];
+
+  pool.query(`SELECT * FROM enrolledstudents WHERE status = "DROPPED" ?`, values, function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database query error");
+    }
+
+    const data = result;
+
+    if (data.length === 0) {
+      return res.send("<p>No Data Found</p>"); // No data found, send custom message
+    }
+
+
+    generateTableHTML(data, function (tableHTML) {
+      res.send(tableHTML);
+    });
+  });
+});
+
+
+// app.get("/archiveSelector", function (req, res) {
+//   const selector = req.query.selector;
+
+//   const selectTerm = `%${selector}%`;
+//   const values = [selectTerm];
+
+//   pool.query(`SELECT * FROM details_students WHERE Status = "INACTIVE" ?`, values, function (err, result) {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).send("Database query error");
+//     }
+
+//     const data = result;
+
+//     if (data.length === 0) {
+//       return res.send("<p>No Data Found</p>"); // No data found, send custom message
+//     }
+
+
+//     generateTableHTML(data, function (tableHTML) {
+//       res.send(tableHTML);
+//     });
+//   });
+// });
 
 
 module.exports = app;
