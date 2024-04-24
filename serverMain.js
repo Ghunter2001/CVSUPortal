@@ -44,6 +44,12 @@ app.get("/adminDash", function (req, res) {
 });
 
 
+app.get("/notice", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/Posting.html");
+});
+
+
+
 app.get("/enrollment", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/TEnrollment.html");
 });

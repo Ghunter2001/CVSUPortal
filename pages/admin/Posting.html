@@ -7,12 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/admin/DataStudents.css">
+    <link rel="stylesheet" href="css/admin/Posting.css">
+    <link rel="stylesheet" href="css/main.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
     <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
-    <title>CVSUPortal - Students Data</title>
+    <title>CVSUPortal - Posting</title>
 </head>
 
 <body>
@@ -40,7 +43,6 @@
                         <span class="link-name">Posting</span>
                     </a>
                 </li>
-
 
                 <li class="dropdown">
                     <a href="#" class="dropbtn" role="button">
@@ -91,6 +93,7 @@
                     </a>
 
                     <ul class="dropdown-content">
+                        <li><a href="history"><span class="link-name">Enrollment History</span></a></li>
                         <li><a href="Archive"><span class="link-name">Archive</span></a></li>
                         <li><a href="requirements"><span class="link-name">Requirements</span></a></li>
                     </ul>
@@ -127,128 +130,91 @@
 
         <div class="dash-content">
             <div class="container">
-                <div class="containerIn">
-                    <div class="header">
-                        <h3>Add Schedule Template </h3>
+                <div class="header">
+                    <div class="head-title">
+                        <h3>All Current Notice</h3>
                     </div>
-                    <hr>
-                    <form action="addSchedTemplate" id="schedTemp" method="post">
-                        <div class="inCon  ">
-
-                            <div class="Fields">
-                                <span>Template Name</span>
-                                <input class="input-fields" type="text" id="template" name="template">
-                            </div>
-
-                            <div class="Fields">
-                                <span>Adviser</span>
-                                <select class="input-fields" id="adviser" name="adviser">
-                                    <option value="">Please Select</option>
-
-                                </select>
-
-                            </div>
-
-                            <div class="Fields">
-                                <span>Subject</span>
-                                <select class="input-fields" id="subject" name="subject">
-                                    <option value="">Please Select</option>
-
-                                </select>
-
-                            </div>
-
-                            <div class="Fields">
-                                <span>Time In / Time Out</span>
-                                <div class="twoblock">
-                                    <input class="input-fields" type="time" id="timeIn" name="timeIn">
-                                    -
-                                    <input class="input-fields" type="time" id="timeOut" name="timeOut">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn" id="submitbtn">Submit</button>
-                        </div>
-                    </form>
+                    <button id="newButton" type="button">Add Notice</button>
                 </div>
 
-
-                
-                <div class="containerNext">
-                    <div class="header">
-                        <h3>Set Schedule</h3>
+                <div class="container">
+                    <div class="table">
+                        {{TABLE_NOTICE}}
                     </div>
-                    <hr>
-                    <form action="addSched" id="addSched" method="post">
-                        <div class="inCon  ">
+                </div>
+            </div>
 
-                            <div class="Fields">
-                                <span>Academic Year</span>
-                                <select class="input-fields" id="acadyear" name="acadyear">
-                                    <option value="">Please Select</option>
+            <div id="myModal" class="myModal">
+                <div class="modal-content">
 
-                                </select>
+                    <div class="header">
 
-                            </div>
+                        <div class="header-top">
+                            <span>Add Notice</span>
+                        </div>
 
-                            <div class="Fields">
-                                <span>Template Created</span>
-                                <select class="input-fields" id="tempCreated" name="tempCreated">
-                                    <option value="">Please Select</option>
+                        <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
 
-                                </select>
+                    <form>
+                        <div class="twocol">
+                            <form action="postForm" id="postform" method="post">
+                                <div class="posTing">
+    
+                                    <div class="input">
+                                        <span>Select Course</span>
+                                        <select class="input-fields" id="pCourse" name="pCourse">
+                                            <option value="">Select Course</option>
+                                            <option value="BSIT">BSIT</option>
+                                            <option value="BSBM">BSBM</option>
+                                            <option value="BSCS">BSCS</option>
+                                            <option value="BSC">BSC</option>
+                                            <option value="BSHM">BSHM</option>
+                                            <option value="BSC">BSC</option>
+                                        </select>
+                                    </div>
 
-                            </div>
-
-                            <div class="twoblock">
-                                <form id="checkboxForm">
-                                    <span>Date:</span>
-                                    <input class="input-fields" type="checkbox" id="monday" name="days" value="M">
-                                    <label for="monday">M</label>
-                                
-                                    <input class="input-fields" type="checkbox" id="tuesday" name="days" value="T">
-                                    <label for="tuesday">T</label>
-                                
-                                    <input class="input-fields" type="checkbox" id="wednesday" name="days" value="W">
-                                    <label for="wednesday">W</label>
-                                
-                                    <input class="input-fields" type="checkbox" id="thursday" name="days" value="TH">
-                                    <label for="thursday">TH</label>
-                                
-                                    <input class="input-fields" type="checkbox" id="friday" name="days" value="F">
-                                    <label for="friday">F</label>
-                                
-                                    <input class="input-fields" type="checkbox" id="saturday" name="days" value="Saturday">
-                                    <label for="saturday">S</label>
-                                </form>
-                                
-                            </div>
-
-
-                            <div class="Fields">
-                                <span>Advisory</span>
-                                <select class="input-fields" id="advisory" name="advisory">
-                                    <option value="">Please Select</option>
-
-                                </select>
-
-                            </div>
-
+                                    <div class="input">
+                                        <span>Select Type</span>
+                                        <select class="input-fields" id="pType" name="pType">
+                                            <option value="">Please Select</option>
+                                            <option value="Announcement">Announcement</option>
+                                            <option value="Event">Event</option>
+                                            <option value="News">News</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="input">
+                                        <label for="pDate">Date:</label>
+                                        <input class="input-fields" type="date" id="pDate" name="pDate">
+                                    </div>
+    
+                                    <div class="input">
+                                        <label for="pTime">Time:</label>
+                                        <input class="input-fields" type="time" id="pTime" name="pTime">
+                                    </div>
+    
+                                    <div class="input">
+                                        <label for="pTitle">Notice Title:</label>
+                                        <textarea class="input-fields" rows="2" style="resize: none;" type="text"
+                                            id="pTitle" name="pTitle"></textarea>
+                                    </div>
+    
+                                    <div class="input">
+                                        <label for="pDesc">Notice Description:</label>
+                                        <textarea class="input-fields" style="resize: none;" type="text" id="pDesc"
+                                            name="pDesc"></textarea>
+                                    </div>
+    
+                                </div>
+                            </form>
 
                             <button type="submit" class="btn" id="submitBTN">Submit</button>
+
                         </div>
                     </form>
                 </div>
-
             </div>
-
-            <div class="conTable">
-                <hr>
-                <div class="table">
-                    {{TABLE_Schedule}}
-                </div>
-
-            </div>
-
         </div>
 
         <footer>
@@ -258,7 +224,8 @@
 
 
 
-    <script src="script/admin/TSchedule.js"></script>
+
+    <script src="script/admin/Posting.js"></script>
     <script src="script/admin/main.js"></script>
 </body>
 
