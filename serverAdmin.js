@@ -6,6 +6,11 @@ const pool = require('./database');
 const app = express();
 
 
+
+
+
+
+
 app.get('/sessionAdmin', (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
@@ -35,9 +40,7 @@ app.get('/sessionAdmin', (req, res) => {
   });
 });
 
-app.get("/adminDash", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/adminDash.html");
-});
+
 
 
 app.get('/loadAcadYear', function (req, res) {
@@ -328,42 +331,13 @@ app.get("/searchRegister", function (req, res) {
 
 
 
-
-
-
-
-
-
-app.get("/enrollment", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/TEnrollment.html");
-});
-
 //ENROLLMENT END
 
 
-app.get("/schedule", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/TSchedule.html");
-});
 
 
 
 
-app.get("/history", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/RHistory.html");
-});
-
-
-
-
-
-app.get("/Archive", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/RArchive.html");
-});
-
-
-app.get("/requirements", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/RReq.html");
-});
 
 //ACADYEAR TAB
 
@@ -532,11 +506,6 @@ app.post('/update', function (req, res) {
 });
 
 
-
-app.get("/acadyear", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/MAcadyear.html");
-});
-
 //ACADYEAR END
 
 
@@ -665,9 +634,7 @@ app.post('/delete', function (req, res) {
   });
 });
 
-app.get("/courses", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/MCourses.html");
-});
+
 //COURSE END
 
 
@@ -799,9 +766,7 @@ app.post('/deleteSec', function (req, res) {
   });
 });
 
-app.get("/sections", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/MSection.html");
-});
+
 
 //SECTION END
 
@@ -972,11 +937,6 @@ app.get('/prereqOption', (req, res) => {
 });
 
 
-
-app.get("/subjects", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/MSubject.html");
-});
-
 // SUBJECT TAB END
 
 
@@ -1025,9 +985,6 @@ app.post("/addstudentForm", (req, res) => {
     console.log("Input Details");
   }
 });
-
-
-
 
 
 
@@ -1130,10 +1087,6 @@ app.post('/archive', function (req, res) {
   });
 });
 
-
-app.get("/students", function (req, res) {
-  res.sendFile(__dirname + "/pages/admin/DataStudents.html");
-});
 
 
 

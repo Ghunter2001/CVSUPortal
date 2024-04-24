@@ -115,9 +115,7 @@ function generateTableHTML(data, callback) {
 
 
 
-app.get("/grades", function (req, res) {
-  res.sendFile(__dirname + "/pages/students/grades.html");
-});
+
 
 
 

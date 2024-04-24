@@ -39,6 +39,53 @@ app.get("/admin", (req, res) => {
   res.sendFile(__dirname + "/pages/admin/login.html");
 });
 
+app.get("/adminDash", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/adminDash.html");
+});
+
+
+app.get("/enrollment", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/TEnrollment.html");
+});
+
+
+app.get("/schedule", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/TSchedule.html");
+});
+
+
+app.get("/acadyear", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/MAcadyear.html");
+});
+
+app.get("/courses", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/MCourses.html");
+});
+
+app.get("/sections", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/MSection.html");
+});
+
+app.get("/subjects", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/MSubject.html");
+});
+
+app.get("/students", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/DataStudents.html");
+});
+
+
+app.get("/history", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/RHistory.html");
+});
+
+app.get("/Archive", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/RArchive.html");
+});
+
+app.get("/requirements", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/RReq.html");
+});
 
 
 
@@ -46,6 +93,22 @@ app.get("/admin", (req, res) => {
 app.get("/stud", (req, res) => {
   res.sendFile(__dirname + "/pages/admission/login.html");
 });
+
+
+
+app.get("/dashboard", function (req, res) {
+  res.sendFile(__dirname + "/pages/students/dashboard.html");
+});
+
+app.get("/grades", function (req, res) {
+  res.sendFile(__dirname + "/pages/students/grades.html");
+});
+
+app.get("/classSched", function (req, res) {
+  res.sendFile(__dirname + "/pages/students/classSched.html");
+});
+
+
 
 
 
