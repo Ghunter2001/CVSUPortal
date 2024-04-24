@@ -1732,4 +1732,133 @@ app.get("/archiveSelector", function (req, res) {
 // });
 
 
+
+app.post("/postForm", (req, res) => {
+  const { pType, pDate, pTime, pTitle, pDesc } = req.body;
+
+
+  if (pType !== "" || pDate !== "" || pTime !== "" || pTitle !== "" || pDesc !== "") {
+    pool.getConnection((err, connect) => {
+      if (err) {
+        console.error('Error connecting to database: ' + err.stack);
+        return;
+      }
+
+
+      connect.query("SELECT * FROM notice WHERE NoticeTitle= ?", [courseCode], (err, result) => {
+        if (err) throw err;
+
+        if (result.length > 0) {
+          res.send(`
+                      <script>
+                        alert("Already Exist");
+                        window.location.href = "/notice"; 
+                      </script>
+                    `);
+          connect.release();
+        } else {
+          connect.query("INSERT INTO notice(NoticeTitle, NoticeContent) VALUES(?, ?)", [pTitle, pDesc], (err, result) => {
+            if (err) throw err;
+
+            res.send(`
+                      <script>
+                        alert("New Notice Added.");
+                        window.location.href = "/notice"; 
+                      </script>
+                    `);
+            connect.release();
+          });
+        }
+      });
+      
+    });
+  } else {
+    console.log("Input Details");
+  }
+});
+
+
+app.get("/notice", function (req, res) {
+
+  pool.query("SELECT * FROM notice", function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database query error");
+    }
+
+    const data = result;
+
+
+    generateTableNotice(data, function (tableNotice) {
+
+      fs.readFile(__dirname + "/pages/admin/Posting.html", "utf8", (err, fileData) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error reading file");
+        }
+
+
+        const updatedFileData = fileData.replace("{{TABLE_NOTICE}}", tableNotice);
+
+        res.send(updatedFileData);
+      });
+    });
+  });
+});
+
+function generateTableNotice(data, callback) {
+  let tableNotice = `
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>pType</th>
+            <th>pDate</th>
+            <th>pTime</th>
+            <th>pTitle</th>
+            <th>pDesc</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+
+  for (const row of data) {
+    tableNotice += `
+          <tr>
+            <td>${row.NoticeTitle}</td>
+            <td>${row.	NoticeContent}</td>
+            <td>
+              <a onclick="deleteRow('${row.NoticeTitle}')"><img src="/img/delete.svg" alt="Delete"</button>
+            </td>
+          </tr>`;
+  }
+
+  tableNotice += `
+        </tbody>
+      </table>
+    </div>`;
+
+
+  callback(tableNotice);
+}
+
+// Function to delete row
+app.post('/NoticeDelete', function (req, res) {
+  const NoticeTitle = req.body.NoticeTitle;
+
+  const queryString = 'DELETE FROM course WHERE NoticeTitle = ?';
+  pool.query(queryString, [NoticeTitle], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error deleting row');
+    }
+    console.log('Row deleted');
+
+    res.status(200).send('Row deleted successfully');
+  });
+});
+
+
+
 module.exports = app;
