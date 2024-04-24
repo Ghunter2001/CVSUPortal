@@ -34,6 +34,27 @@ app.get("/aboutmain", (req, res) => {
   res.sendFile(__dirname + "/pages/landing/about.html");
 });
 
+
+app.get("/admin", (req, res) => {
+  res.sendFile(__dirname + "/pages/admin/login.html");
+});
+
+
+
+
+
+app.get("/stud", (req, res) => {
+  res.sendFile(__dirname + "/pages/admission/login.html");
+});
+
+
+
+
+
+
+
+
+
 //START SERVER
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
