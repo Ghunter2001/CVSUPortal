@@ -5,9 +5,7 @@ const express = require("express");
 const app = express();
 
 
-app.get("/login.html", (req, res) => {
-    res.sendFile(__dirname + "/login.html");
-});
+
 
 
 // Logout endpoint
