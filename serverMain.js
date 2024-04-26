@@ -35,9 +35,7 @@ app.get("/aboutmain", (req, res) => {
 });
 
 
-app.get("/admin", (req, res) => {
-  res.sendFile(__dirname + "/pages/admin/login.html");
-});
+
 
 app.get("/adminDash", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/adminDash.html");
@@ -93,8 +91,8 @@ app.get("/requirements", function (req, res) {
 
 
 
-app.get("/stud", (req, res) => {
-  res.sendFile(__dirname + "/pages/admission/login.html");
+app.get("/login", (req, res) => {
+  res.sendFile(__dirname + "/pages/landing/login.html");
 });
 
 app.get("/dashboard", function (req, res) {

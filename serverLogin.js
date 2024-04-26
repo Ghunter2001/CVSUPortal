@@ -14,41 +14,6 @@ app.get("/logout", (req, res) => {
     res.redirect("/admin");
 });
 
-//ADMIN LOGIN
-app.post("/adminLogin", (req, res) => {
-    const { username, pass } = req.body;
-
-    pool.getConnection((err, connection) => {
-        if (err) {
-            console.error('Error getting MySQL connection: ', err);
-            res.status(500).send("Server error");
-            return;
-        }
-
-        const adminQuery = `SELECT * FROM admin WHERE username = '${username}' AND pass = '${pass}'`;
-
-        new Promise((resolve, reject) => {
-            connection.query(adminQuery, (err, adminResult) => {
-                if (err) reject(err);
-                else resolve(adminResult);
-            });
-        }).then((adminResult) => {
-            if (adminResult.length > 0) {
-                // Login as an admin
-                res.redirect("/adminDash");
-            } else {
-                // No matching admin found
-                res.redirect("/admin?error=invalid");
-            }
-        }).catch((err) => {
-            console.error('Error executing MySQL query: ', err);
-            res.status(500).send("Server error");
-        }).finally(() => {
-            // Release the connection back to the pool
-            connection.release();
-        });
-    });
-});
 
 
 // LOGIN PAGE
@@ -62,8 +27,16 @@ app.post("/login", (req, res) => {
             return;
         }
 
+        // Query to check username and password in the "enrolledStudents" table
         const userQuery = `SELECT * FROM enrolledstudents WHERE student_number = '${username}' AND password = '${pass}'`;
 
+        // Query to check username and password in the "admin" table
+        const adminQuery = `SELECT * FROM admin WHERE username = '${username}' AND pass = '${pass}'`;
+
+        // Query to check username and password in the "users" table
+        const teacherQuery = `SELECT * FROM faculty WHERE username = '${username}' AND pass = '${pass}'`;
+
+        // Execute all queries in parallel
         Promise.all([
             new Promise((resolve, reject) => {
                 connection.query(userQuery, (err, userResult) => {
@@ -71,10 +44,28 @@ app.post("/login", (req, res) => {
                     else resolve(userResult);
                 });
             }),
+            new Promise((resolve, reject) => {
+                connection.query(adminQuery, (err, adminResult) => {
+                    if (err) reject(err);
+                    else resolve(adminResult);
+                });
+            }),
+            new Promise((resolve, reject) => {
+                connection.query(teacherQuery, (err, teacherResult) => {
+                    if (err) reject(err);
+                    else resolve(teacherResult);
+                });
+            })
         ]).then(([userResult, adminResult, teacherResult]) => {
             if (userResult.length > 0) {
                 // Login as a regular user
                 res.redirect("/dashboard");
+            } else if (adminResult.length > 0) {
+                // Login as an admin
+                res.redirect("/adminDash");
+            } else if (teacherResult.length > 0) {
+                // Login as a teacher
+                res.redirect("/teacherDash.html");
             } else {
                 // No matching user found in any table
                 res.redirect("/?error=1");
