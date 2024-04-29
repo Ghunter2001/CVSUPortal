@@ -28,6 +28,7 @@ h6{
 /*nav tags*/
 nav{
     position: fixed;
+    height: 15%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -236,6 +237,7 @@ nav .navigation ul li a:hover{
     text-align: center;
     font-family: "Robo mono";
     font-size: large;
+    text-decoration-color: #3c4a5e;
 }
 
 #hym .hym-box iframe{
@@ -256,8 +258,7 @@ nav .navigation ul li a:hover{
     color:#3c4a5e;
 }
 #hym li {
-    color:darkgreen;
-    font-weight: lighter;
+    color:black;
     font-size: medium;
     line-height: 1.3em;
     letter-spacing: -.03em;

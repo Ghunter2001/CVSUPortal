@@ -41,14 +41,25 @@ footer{
     width: fit-content;
     margin-bottom: 40px;
     position: relative;
+    font-size: large;
 }
+.col i{
+    height: 100%;
+    font-size: large;
+}
+
 ul li{
     list-style: none;
     margin-bottom: 12px;
+    font-size: large;
 }
 ul li a{
     text-decoration: none;
     caret-color: #fff;
+    font-size: large;
+}
+p{
+    font-size: large;
 }
 .social-icons {
     width: 40px;
