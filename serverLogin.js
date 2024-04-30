@@ -34,7 +34,7 @@ app.post("/login", (req, res) => {
         const adminQuery = `SELECT * FROM admin WHERE username = '${username}' AND pass = '${pass}'`;
 
         // Query to check username and password in the "users" table
-        const teacherQuery = `SELECT * FROM faculty WHERE username = '${username}' AND pass = '${pass}'`;
+        const teacherQuery = `SELECT * FROM admin WHERE username = '${username}' AND pass = '${pass}'`;
 
         // Execute all queries in parallel
         Promise.all([

@@ -1867,6 +1867,17 @@ app.post('/NoticeDelete', function (req, res) {
   });
 });
 
+app.get('/pCourseOption', (req, res) => {
+  const queryString = 'SELECT courseCode FROM course';
 
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('Error fetching course:', err);
+      return res.status(500).json({ error: 'Error fetching credit units' });
+    }
+    const course = result.map(row => ({ value: row.courseCode, text: row.courseCode }));
+    res.json(course);
+  });
+});
 
 module.exports = app;
