@@ -107,7 +107,7 @@ nav .navigation ul li a:hover{
     margin-bottom: 2%;
 
 }
-#home p,p1 {
+#home p {
     height: 50%;
     width: 50%;
     color: #fff;
@@ -115,13 +115,6 @@ nav .navigation ul li a:hover{
     line-height: 25px ;
     text-align: left;
     margin-right: 26%;
-}
-#home p2{
-    padding-right: 64%;
-    padding-bottom: 40%;
-    color: #fff;
-    font-size: 1.2rem;
-    line-height: 25px ;
 }
 #home .btn{
     margin-top: 30px;
@@ -480,7 +473,7 @@ nav .navigation ul li a:hover{
         padding: 25px 30px;
     }
     nav img{
-        width: 170px;
+        width: 180px;
     }
     #menu-btn{
         display: initial;
@@ -489,7 +482,7 @@ nav .navigation ul li a:hover{
         display: initial;
         font-size: 1.6rem;
         color: #fff;
-        padding: 30px 0 20px 20px;
+        padding-right: 160px;
     }
     nav .navigation ul{
         position: absolute;
@@ -521,14 +514,14 @@ nav .navigation ul li a:hover{
         padding-top: 0px;
     }
     #home h2{
-    height:5%;
-    color: #fff;
-    font-size: 2.1rem;
-    line-height: 2px;
-    margin-right:35%;
-    margin-top: 70%;
-    margin-bottom: 3%;       
-    }
+        height:5%;
+        color: #fff;
+        font-size: 2.1rem;
+        line-height: 2px;
+        margin-right:35%;
+        margin-top: 70%;
+        margin-bottom: 3%;       
+        }
     #home p {
     height: 50%;
     width: 50%;
@@ -552,7 +545,7 @@ nav .navigation ul li a:hover{
 
 #home p2{
     color: #fff;
-    margin-right: 5%;
+    margin-left: 31px;
     margin: bottom 1px;
     margin-top: -5%;
 }
@@ -562,3 +555,31 @@ nav .navigation ul li a:hover{
         padding: 8vw 4vw 0 4vw;
     }
 }    
+
+@media (max-width:1024px){
+    nav{
+        flex-direction: row;
+        justify-content: space-between;
+        
+    }
+    nav .navigation ul{
+        align-items: center;
+        padding-inline:  10% ;
+        padding-right: 10%;
+        padding-left: 11%;
+    }
+    nav img{
+        width: 170px;
+    }
+    #home p{
+        margin-right: 40%;
+    }
+    #home p1{
+        margin-right: 40%;
+    }
+    #home p2{
+        margin-right: 7%;
+    }
+}
+
+
