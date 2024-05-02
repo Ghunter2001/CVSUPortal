@@ -95,38 +95,24 @@ nav .navigation ul li a:hover{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 40px;
 }
 #home h2{
     height: 4%;
     color: #fff;
     font-size: 2.2rem;
-    line-height: 1px ;
     margin-right: 45%;
-    margin-top: 47%;
-    margin-bottom: 2%;
-
 }
 #home p {
-    height: 50%;
+    height: 10px;
     width: 50%;
     color: #fff;
     font-size: 1.2rem;
     line-height: 25px ;
     text-align: left;
-    margin-right: 26%;
+    margin-right: 44%; 
+    padding: 1%;
 }
-#home .btn{
-    margin-top: 30px;
-}
-#home a{
-    text-decoration:none;
-    font-size: 0.9rem;
-    padding: 13px 35px;
-    background-color: #fff;
-    font-weight: 600;
-    border-radius: 5px;
-}
+
 #home a.blue{
     color: #fff;
     background:rgba(239, 116, 1, 0.989);
