@@ -398,6 +398,11 @@ body.dark .dashboard footer {
 
 
 
+.profile {
+    display: none;
+}
+
+
 @media (max-width: 1000px) {
     nav {
         width: 73px;
