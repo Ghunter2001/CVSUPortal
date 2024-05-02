@@ -121,6 +121,9 @@ app.get("/teacherDash", function (req, res) {
 });
 
 
+app.get("/landing", function (req, res) {
+  res.sendFile(__dirname + "/pages/admin/Landing.html");
+});
 
 
 
