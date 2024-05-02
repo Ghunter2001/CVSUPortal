@@ -137,79 +137,65 @@
 
                 <div class="container">
                     <div class="table">
-                        {{TABLE_NOTICE}}
+                        <table> <!-- Start table tag -->
+                            {{TABLE_NOTICE}}
+                        </table> <!-- End table tag -->
                     </div>
                 </div>
             </div>
 
             <div id="myModal" class="myModal">
                 <div class="modal-content">
-
                     <div class="header">
-
                         <div class="header-top">
                             <span>Add Notice</span>
                         </div>
-
                         <span class="close" onclick="closeModal()">&times;</span>
                     </div>
-
-                        <div class="twocol">
-                            <form action="postForm" id="postform" method="post">
-                                <div class="posTing">
-    
-                                    <div class="input">
-                                        <span>Select Course</span>
-                                        <select class="input-fields" id="pCourse" name="pCourse">
-                                            <option value="">Select Course</option>
-                                        </select>
-                                        
-                                    </div>
-
-                                    <div class="input">
-                                        <span>Select Type</span>
-                                        <select class="input-fields" id="pType" name="pType">
-                                            <option value="">Please Select</option>
-                                            <option value="Announcement">Announcement</option>
-                                            <option value="Event">Event</option>
-                                            <option value="News">News</option>
-
-                                        </select>
-                                    </div>
-    
-                                    <div class="input">
-                                        <label for="pDate">Date:</label>
-                                        <input class="input-fields" type="date" id="pDate" name="pDate">
-                                    </div>
-    
-                                    <div class="input">
-                                        <label for="pTime">Time:</label>
-                                        <input class="input-fields" type="time" id="pTime" name="pTime">
-                                    </div>
-    
-                                    <div class="input">
-                                        <label for="pTitle">Notice Title:</label>
-                                        <textarea class="input-fields" rows="2" style="resize: none;" type="text"
-                                            id="pTitle" name="pTitle"></textarea>
-                                    </div>
-    
-                                    <div class="input">
-                                        <label for="pDesc">Notice Description:</label>
-                                        <textarea class="input-fields" style="resize: none;" type="text" id="pDesc"
-                                            name="pDesc"></textarea>
-                                    </div>
-    
+                    <div class="twocol">
+                        <form action="postForm" id="postform" method="post">
+                            <div class="posTing">
+                                <div class="input">
+                                    <span>Select Course</span>
+                                    <select class="input-fields" id="pCourse" name="pCourse">
+                                        <option value="">Select Course</option>
+                                    </select>
                                 </div>
-
-                                <button type="submit" class="btn" id="submitBTN">Submit</button>
-                            </form>
-
-
-
-                        </div>
+                                <div class="input">
+                                    <span>Select Type</span>
+                                    <select class="input-fields" id="pType" name="pType">
+                                        <option value="">Please Select</option>
+                                        <option value="Announcement">Announcement</option>
+                                        <option value="Event">Event</option>
+                                        <option value="News">News</option>
+                                    </select>
+                                </div>
+                                <div class="input">
+                                    <label for="pDate">Date:</label>
+                                    <input class="input-fields" type="date" id="pDate" name="pDate">
+                                </div>
+                                <div class="input">
+                                    <label for="pTime">Time:</label>
+                                    <input class="input-fields" type="time" id="pTime" name="pTime">
+                                </div>
+                                <div class="input">
+                                    <label for="pTitle">Notice Title:</label>
+                                    <textarea class="input-fields" rows="2" style="resize: none;" type="text"
+                                        id="pTitle" name="pTitle"></textarea>
+                                </div>
+                                <div class="input">
+                                    <label for="pDesc">Notice Description:</label>
+                                    <textarea class="input-fields" style="resize: none;" type="text" id="pDesc"
+                                        name="pDesc"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn" id="submitBTN">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <footer>
             <h3>&copy; Cavite State University - Bacoor Campus</h3>

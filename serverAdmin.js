@@ -1877,7 +1877,7 @@ app.get("/archiveSelector", function (req, res) {
 // });
 
 
-
+//POSTING TAB
 app.post("/postForm", (req, res) => {
   const { pType, pDate, pTime, pTitle, pDesc, pCourse } = req.body;
 
@@ -1957,7 +1957,7 @@ function generateTableNotice(data, callback) {
       <table>
         <thead>
           <tr>
-          <th>Notice Type</th>
+            <th>Notice Type</th>
             <th>Notice Courses</th>
             <th>Date Posted</th>
             <th>Time Posted</th>
@@ -1977,12 +1977,17 @@ function generateTableNotice(data, callback) {
             <td>${row.TimePosted}</td>
             <td>${row.NoticeTitle}</td>
             <td>${row.NoticeContent}</td>
-
-
-
-
             <td>
-              <a onclick="deleteRow('${row.NoticeTitle}')"><img src="/img/delete.svg" alt="Delete"</button>
+              <!-- Update icon -->
+              <img src="/img/edit.svg" class="edit-button" alt="Update" onclick="editRow('${row.NoticeTitle}')"
+                   data-notice-type="${row.NoticeType}"
+                   data-course-id="${row.CourseID}"
+                   data-posted-date="${row.PostedDate}"
+                   data-time-posted="${row.TimePosted}"
+                   data-notice-title="${row.NoticeTitle}"
+                   data-notice-content="${row.NoticeContent}">
+              <!-- Delete icon -->
+              <img src="/img/delete.svg" alt="Delete" onclick="deleteRow('${row.NoticeTitle}')">
             </td>
           </tr>`;
   }
@@ -1992,26 +1997,41 @@ function generateTableNotice(data, callback) {
       </table>
     </div>`;
 
-
   callback(tableNotice);
 }
 
 // Function to delete row
 app.post('/NoticeDelete', function (req, res) {
-  const NoticeTitle = req.body.NoticeTitle;
+  const pTitle = req.body.pTitle;
 
   const queryString = 'DELETE FROM notice WHERE NoticeTitle = ?';
-  pool.query(queryString, [NoticeTitle], (err, result) => {
+  pool.query(queryString, [pTitle], (err, result) => {
     if (err) {
       console.error(err);
-      return res.status(500).send('Error deleting row');
+      return res.status(500).send('Error deleting notice');
     }
-    console.log('Row deleted');
-
-    res.status(200).send('Row deleted successfully');
+    console.log('Notice deleted');
+    res.status(200).send('Notice deleted successfully');
   });
 });
 
+// Function to Update Row
+app.post('/NoticeEdit', function (req, res) {
+  const { NoticeTitle, NoticeContent, CourseID, PostedDate, TimePosted, NoticeType } = req.body;
+
+  const queryString = 'UPDATE notice SET NoticeContent = ?, CourseID = ?, PostedDate = ?, TimePosted = ?, NoticeType = ? WHERE NoticeTitle = ?';
+  pool.query(queryString, [NoticeContent, CourseID, PostedDate, TimePosted, NoticeType, NoticeTitle], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error updating row');
+    }
+    console.log('Row updated');
+
+    res.status(200).send('Row updated successfully');
+  });
+});
+
+// POST DROPDOWN
 app.get('/pCourseOption', (req, res) => {
   const queryString = 'SELECT courseCode FROM course';
 
