@@ -73,8 +73,13 @@ fetch('/advisoryOption')
 
 
 
+
+
+
+
+
 document.getElementById('submitbtn').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
 
     const template = document.getElementById('template').value;
     const adviser = document.getElementById('adviser').value;
@@ -82,9 +87,7 @@ document.getElementById('submitbtn').addEventListener('click', function (event) 
     const timeIn = document.getElementById('timeIn').value;
     const timeOut = document.getElementById('timeOut').value;
 
-    // Check if required fields are not empty
     if (template !== "" && adviser !== "" && subject !== "" && timeIn !== "" && timeOut !== "") {
-        // Send the data to the server
         fetch('/addSchedTemplate', {
             method: 'POST',
             headers: {
@@ -95,7 +98,6 @@ document.getElementById('submitbtn').addEventListener('click', function (event) 
             .then(response => {
                 if (response.ok) {
                     console.log('New Sched Template Added.');
-                    // Redirect or perform any other action upon successful addition
                     window.location.href = "/schedule";
                 } else {
                     console.error('Failed to add new Sched Template');
@@ -105,6 +107,7 @@ document.getElementById('submitbtn').addEventListener('click', function (event) 
                 console.error('Error:', error);
             });
     } else {
+        alert("Please input details");
         console.log("Input Details are incomplete");
     }
 });
@@ -115,39 +118,68 @@ document.getElementById('submitbtn').addEventListener('click', function (event) 
 
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    const submitBtn = document.getElementById('submit');
 
-document.getElementById('submitBTN').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    submitBtn.addEventListener('click', async function (event) {
+        event.preventDefault();
 
-    const acadyear = document.getElementById('acadyear').value;
-    const tempCreated = document.getElementById('tempCreated').value;
-    const advisory = document.getElementById('advisory').value; // Fix: Retrieve advisory value
+        const acadyear = document.getElementById('acadyear').value;
+        const tempCreated = document.getElementById('tempCreated').value;
+        const advisory = document.getElementById('advisory').value;
+        const selectedDays = Array.from(document.querySelectorAll('input[name="days"]:checked')).map(input => input.value);
 
-    const formData = new FormData(document.getElementById('checkboxForm'));
-    const selectedDays = Array.from(formData.getAll('days')); // Convert NodeList to Array
+        if (acadyear !== "" && tempCreated !== "" && advisory !== "" && selectedDays.length > 0) {
+            try {
+                const response = await fetch('/addSched', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ acadyear, tempCreated, days: selectedDays, advisory })
+                });
 
-    // Check if required fields are not empty
-    if (acadyear !== "" && tempCreated !== "" && advisory !== "") { // Fix: Use && instead of || for validation
-        // Send the data to the server
-        fetch('/addSched', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ acadyear, tempCreated, days: selectedDays, advisory, })
-        })
-            .then(response => {
                 if (response.ok) {
                     console.log('Schedule added successfully');
-                    // Redirect or perform any other action upon successful addition
+                    window.location.href = "/schedule";
                 } else {
                     console.error('Failed to add schedule');
                 }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        } else {
+            alert("Please input details");
+            console.log("Input Details are incomplete");
+        }
+    });
+});
+
+
+
+
+
+
+function deleteSCHED(tempName) {
+
+    if (confirm("Are you sure you want to delete this row?")) {
+        fetch('/deleteSCHEDS', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ tempName }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log('Row deleted successfully');
+                window.location.href = "/schedule"
             })
             .catch(error => {
                 console.error('Error:', error);
+
             });
-    } else {
-        console.log("Input Details are incomplete");
     }
-});
+}

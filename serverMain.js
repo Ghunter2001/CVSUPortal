@@ -87,6 +87,13 @@ app.get("/requirements", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/RReq.html");
 });
 
+app.get("/admission", function (req, res) {
+  res.sendFile(__dirname + "/pages/admission/admForm.html");
+});
+
+
+
+
 
 
 

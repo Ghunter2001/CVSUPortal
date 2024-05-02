@@ -321,22 +321,25 @@ app.get("/searchEnroll", function (req, res) {
 app.get("/searchRegister", function (req, res) {
   const searchStudents = req.query.searchStudents; // Assuming lrn is sent as a query parameter
 
-  pool.query('SELECT * FROM details_students WHERE lrn = ?', [searchStudents], function (err, result) {
+  pool.query('SELECT * FROM details_students WHERE lrn = ? OR lname = ?', [searchStudents,searchStudents], function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
     }
 
-    // Assuming there's only one result for a given LRN
     const foundStudent = result[0];
 
     if (foundStudent) {
-      res.json(foundStudent); // Return the found student as JSON response
+      res.json(foundStudent);
     } else {
       res.status(404).send('Student not found');
     }
   });
 });
+
+
+
+
 
 
 //ENROLLMENT END
@@ -401,8 +404,70 @@ app.post("/addSchedTemplate", async (req, res) => {
 
 
 
+
+
+app.post("/addSched", async (req, res) => {
+  try {
+    const { acadyear, tempCreated, advisory } = req.body;
+    const selectedDays = req.body.days;
+
+    if (acadyear !== "" || tempCreated !== "" || advisory !== "") {
+      pool.getConnection((err, connect) => {
+        if (err) {
+          console.error('Error connecting to database: ' + err.stack);
+          return;
+        }
+
+        connect.query("SELECT * FROM createsched WHERE tempName = ?", [tempCreated], (err, result) => {
+          if (err) throw err;
+
+          if (result.length > 0) {
+            res.send(`
+                        <script>
+                          alert("Already Exist");
+                          window.location.href = "/schedule "; 
+                        </script>
+                      `);
+            connect.release();
+          } else {
+            connect.query("INSERT INTO createsched(acadyear, tempName, days ,advisory) VALUES(?, ?, ?, ?)", [acadyear, tempCreated, selectedDays.join(""), advisory], (err, result) => {
+              if (err) {
+                console.error('Error inserting schedule into database: ' + err.stack);
+                res.status(500).send('Error inserting schedule into database');
+                return;
+              }
+
+              res.send(`
+                <script>
+                  alert("New Schedule Added.");
+                  window.location.href = "/schedule"; 
+                </script>
+              `);
+              connect.release();
+            });
+          }
+        });
+
+      });
+    } else {
+      console.log("Input Details");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+
+
+
+
+
+
+
+
 app.get("/schedule", function (req, res) {
-  pool.query("SELECT templatesched.adviser, templatesched.subcode, templatesched.timeIn, templatesched.timeOut, createsched.days, createsched.advisory FROM templatesched INNER JOIN createsched ON templatesched.templateName = createsched.tempCreated", function (err, result) {
+  pool.query("SELECT t.adviser, t.subcode, concat(t.timeIn, '-', t.timeOut) as time, c.days, c.advisory, c.tempName FROM templatesched as t INNER JOIN createsched as c ON t.templateName = c.tempName", function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -435,8 +500,7 @@ function generateTableSchedule(data, callback) {
             <th>Subject Code</th>
             <th>Advisory</th>
             <th>Days</th>
-            <th>Time In</th>
-            <th>Time Out</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>`;
@@ -444,13 +508,13 @@ function generateTableSchedule(data, callback) {
   for (const row of data) {
     tableSchedule += `
           <tr>
-            <td><a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"></a></td>
+            <td><a onclick="deleteSCHED('${row.tempName}')"><img src="/img/delete.svg" alt="Delete"></a></td>
             <td>${row.adviser}</td>
             <td>${row.subcode}</td>
             <td>${row.advisory}</td>
             <td>${row.days}</td>
-            <td>${row.timeIn}</td>
-            <td>${row.timeOut}</td>
+            <td>${row.time}</td>
+            <td style="display:none;">${row.tempName}</td>
           </tr>`;
   }
 
@@ -462,60 +526,26 @@ function generateTableSchedule(data, callback) {
   callback(tableSchedule);
 }
 
+app.post('/deleteSCHEDS', function (req, res) {
+  const tempName = req.body.tempName;
 
-
-
-app.post("/addSched", async (req, res) => {
-  try {
-    const { acadyear, tempCreated, advisory } = req.body;
-    const selectedDays = req.body.days;
-
-    if (acadyear !== "" || tempCreated !== "" || advisory !== "") {
-      pool.getConnection((err, connect) => {
-        if (err) {
-          console.error('Error connecting to database: ' + err.stack);
-          return;
-        }
-
-        connect.query("SELECT * FROM createsched WHERE tempCreated = ?", [tempCreated], (err, result) => {
-          if (err) throw err;
-
-          if (result.length > 0) {
-            res.send(`
-                        <script>
-                          alert("Already Exist");
-                          window.location.href = "/schedule "; 
-                        </script>
-                      `);
-            connect.release();
-          } else {
-            connect.query("INSERT INTO createsched(acadyear, tempCreated, days ,advisory) VALUES(?, ?, ?, ?)", [acadyear, tempCreated, selectedDays.join(), advisory], (err, result) => {
-              if (err) {
-                console.error('Error inserting schedule into database: ' + err.stack);
-                res.status(500).send('Error inserting schedule into database');
-                return;
-              }
-
-              res.send(`
-                <script>
-                  alert("New Schedule Added.");
-                  window.location.href = "/schedule"; 
-                </script>
-              `);
-              connect.release();
-            });
-          }
-        });
-
-      });
-    } else {
-      console.log("Input Details");
+  const queryString = 'DELETE t, c FROM templatesched AS t JOIN createsched AS c ON t.templateName = c.tempName WHERE c.tempName = ?';
+  pool.query(queryString, [tempName], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error deleting row');
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server error");
-  }
+    console.log('Row deleted');
+
+    res.status(200).send('Row deleted successfully');
+  });
 });
+
+
+
+
+
+
 
 
 
@@ -674,10 +704,6 @@ app.get('/advisoryOption', (req, res) => {
 });
 
 
-
-
-
-
 //SCHEDULING END
 
 
@@ -690,51 +716,46 @@ app.post("/addAcademicYear", async (req, res) => {
     const { TXTAyFrom, TXTAyTo, CboSem } = req.body;
     const aycode = TXTAyFrom + TXTAyTo + CboSem;
 
+    if (TXTAyFrom && TXTAyTo && CboSem) {
+      pool.query("SELECT * FROM acadyear WHERE aycode= ?", [aycode], (err, result) => {
+        if (err) throw err;
 
-    if (TXTAyFrom !== "" || TXTAyTo !== "" || CboSem !== "") {
-      pool.getConnection((err, connect) => {
-        if (err) {
-          console.error('Error connecting to database: ' + err.stack);
-          return;
-        }
+        if (result.length > 0) {
+          res.send('<script>alert("Already Exist");window.location.href="/acadyear";</script>');
+        } else {
+          pool.query("UPDATE acadyear SET status = 'CLOSE'", (err, result) => {
+            if (err) throw err;
 
-        connect.query("SELECT * FROM acadyear WHERE aycode= ?", [aycode], (err, result) => {
-          if (err) throw err;
-
-          if (result.length > 0) {
             res.send(`
-                        <script>
-                          alert("Already Exist");
-                          window.location.href = "/acadyear"; 
-                        </script>
-                      `);
-            connect.release();
-          } else {
-            connect.query(`UPDATE acadyear SET status = "CLOSE"`, (err, result) => {
-              if (err) {
-                throw err;
-              } else {
-                connect.query(`INSERT INTO acadyear (aycode, ayfrom, ayto, sem) VALUES (?, ?, ?, ?)`,
-                  [aycode, TXTAyFrom, TXTAyTo, CboSem], (err, result) => {
-                    if (err) throw err;
-
-                    res.send(`
-                        <script>
-                          alert("New Section Added.");
-                          window.location.href = "/acadyear"; 
-                        </script>
-                      `);
-                  });
-              }
-              connect.release();
-            });
-          }
-        });
-
+              <script>
+                if (confirm("Do you want to add this?")) {
+                  alert("New Academic Year Added.");
+                  window.location.href = "/saveAcademicYear?aycode=${aycode}&TXTAyFrom=${TXTAyFrom}&TXTAyTo=${TXTAyTo}&CboSem=${CboSem}";
+                } else {
+                  window.location.href = "/acadyear";
+                }
+              </script>
+            `);
+          });
+        }
       });
     } else {
       console.log("Input Details");
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+app.get("/saveAcademicYear", async (req, res) => {
+  try {
+    const { aycode, TXTAyFrom, TXTAyTo, CboSem } = req.query;
+    pool.query("INSERT INTO acadyear (aycode, ayfrom, ayto, sem) VALUES (?, ?, ?, ?)", 
+      [aycode, TXTAyFrom, TXTAyTo, CboSem], (err, result) => {
+        if (err) throw err;
+        res.redirect("/acadyear");
+      });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");
@@ -963,7 +984,7 @@ function generateTableCourses(data, callback) {
 }
 
 // Function to delete row
-app.post('/delete', function (req, res) {
+app.post('/deleteCourse', function (req, res) {
   const courseCode = req.body.courseCode;
 
   const queryString = 'DELETE FROM course WHERE courseCode = ?';
@@ -1436,10 +1457,10 @@ app.post('/archive', function (req, res) {
 
 
 app.post("/addTeachersForm", (req, res) => {
-  const { output, fname, mname, lname, bdate, sex, cp, email, address } = req.body;
+  const { output, fname, mname, lname, email} = req.body;
 
 
-  if (ouput !== "" || lname !== "" || fname !== "" || mname !== "" || cp !== "" || sex !== "" || bdate !== "" || email !== "" || address !== "") {
+  if (output !== "" || lname !== "" || fname !== "" || mname !== "" || email !== "") {
     pool.getConnection((err, connect) => {
       if (err) {
         console.error('Error connecting to database: ' + err.stack);
@@ -1459,7 +1480,7 @@ app.post("/addTeachersForm", (req, res) => {
                     `);
           connect.release();
         } else {
-          connect.query("INSERT INTO details_teachers(T_ID, FirstName, LastName, MiddleName, Sex, Address, Email, BirthDate, ContactNumber) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", [output, fname, mname, lname, bdate, sex, cp, email, address], (err, result) => {
+          connect.query("INSERT INTO details_teachers(T_ID, FirstName, LastName, MiddleName, Email) VALUES(?, ?, ?, ?, ?)", [output, fname, mname, lname, email], (err, result) => {
             if (err) throw err;
 
             res.send(`

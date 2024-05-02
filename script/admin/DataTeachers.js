@@ -5,20 +5,16 @@ document.getElementById("datateachersForm").addEventListener("submit", function 
     const fname = document.getElementById("fname").value;
     const mname = document.getElementById("mname").value;
     const lname = document.getElementById("lname").value;
-    const bdate = document.getElementById("bdate").value;
-    const sex = document.getElementById("sex").value;
-    const cp = document.getElementById("cp").value;
     const email = document.getElementById("email").value;
-    const address = document.getElementById("address").value;
 
 
 
-    fetch("/adTeachersForm", {
+    fetch("/addTeachersForm", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ output, fname, mname, lname, bdate, sex, cp, email, address })
+        body: JSON.stringify({ output, fname, mname, lname, email })
     })
         .then(response => response.text())
         .then(data => {
@@ -57,22 +53,6 @@ function archiveTeacher(id) {
             });
     }
 }
-
-
-
-//DROPDOWN
-fetch('/advisoryOption')
-    .then(response => response.json())
-    .then(data => {
-        const selectElement = document.getElementById('advisory');
-        data.forEach(option => {
-            const optionElement = document.createElement('option');
-            optionElement.value = option.value;
-            optionElement.textContent = option.text;
-            selectElement.appendChild(optionElement);
-        });
-    })
-    .catch(error => console.error('Error fetching credit units:', error));
 
 
 

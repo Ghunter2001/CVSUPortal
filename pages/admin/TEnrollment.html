@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="css/admin/TEnrollment.css">
     <link rel="stylesheet" href="css/main.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
     <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
@@ -163,7 +161,7 @@
 
                             <div class="search">
                                 <input type="search" name="searchStudents" id="searchStudents">
-                                <button type="button" class="btn" id="submitBTN">Search</button>
+                                <button type="button" class="btn" id="submit">Search</button>
                             </div>
 
                         </div>
@@ -178,8 +176,8 @@
                         <div class="newStudentFom">
 
                             <div class="input">
-                                <label for="lrn">LRN:</label>
-                                <input type="text" id="lrn" name="lrn" readonly>
+                                <label for="lrn" style="display: none;">LRN:</label>
+                                <input type="text" id="lrn" name="lrn" style="display: none;" readonly >
                             </div>
                             <label for="lrn">Student Number:</label>
                             <div class="input">
