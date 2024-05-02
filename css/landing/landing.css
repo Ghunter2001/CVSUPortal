@@ -540,11 +540,12 @@ nav .navigation ul li a:hover{
     #features{
         padding: 8vw 4vw 0 4vw;
     }
+
 }    
 
 @media (max-width: 1000px) {}
 
-@media (max-width: 780px) {}
+@media (max-width: 768px) {}
 
 @media (max-width: 560px) {}
 
