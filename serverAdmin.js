@@ -77,7 +77,7 @@ app.get('/countEnrolled', function (req, res) {
       return;
     }
 
-    const query = 'SELECT COUNT(*) AS count FROM enrolledstudents';
+    const query = 'SELECT COUNT(*) AS count FROM enrolledstudents WHERE status="ENROLLED"';
 
     connection.query(query, function (err, result) {
       connection.release(); // Release the connection
@@ -1468,10 +1468,11 @@ app.post("/addTeachersForm", (req, res) => {
       }
 
 
-      connect.query("SELECT * FROM details_teachers WHERE T_ID= ?", [output], (err, result) => {
+      connect.query("SELECT * FROM faculty WHERE teacherID= ?", [output], (err, result) => {
         if (err) throw err;
 
         if (result.length > 0) {
+          
           res.send(`
                       <script>
                         alert("Already Exist");
@@ -1480,7 +1481,7 @@ app.post("/addTeachersForm", (req, res) => {
                     `);
           connect.release();
         } else {
-          connect.query("INSERT INTO details_teachers(T_ID, FirstName, LastName, MiddleName, Email) VALUES(?, ?, ?, ?, ?)", [output, fname, mname, lname, email], (err, result) => {
+          connect.query("INSERT INTO faculty(teacherID, fname, mname, lname, email) VALUES(?, ?, ?, ?, ?)", [output, fname, mname, lname, email], (err, result) => {
             if (err) throw err;
 
             res.send(`
@@ -1541,7 +1542,7 @@ function generateTableTeachers(data, callback) {
             </th>
             <th>ID</th>
             <th>Name</th>
-            <th>Advisory</th>
+            <th>Email</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -1557,7 +1558,7 @@ function generateTableTeachers(data, callback) {
 
             <td>${row.teacherID}</td>
             <td>${row.fname} ${row.mname} ${row.lname}</td>
-            <td>${row.advisory}</td>
+            <td>${row.email}</td>
             <td>${row.status}</td>
           </tr>`;
   }
@@ -1573,10 +1574,10 @@ function generateTableTeachers(data, callback) {
 
 // Function to delete row
 app.post('/archiveTeacher', function (req, res) {
-  const id = req.body.id;
+  const teacherID = req.body.teacherID;
 
-  const queryString = 'UPDATE faculty SET status = "INACTIVE" WHERE lrn = ?';
-  pool.query(queryString, [id], (err, result) => {
+  const queryString = 'UPDATE faculty SET status = "INACTIVE" WHERE teacherID = ?';
+  pool.query(queryString, [teacherID], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Error store row');
