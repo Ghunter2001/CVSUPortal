@@ -48,7 +48,7 @@ app.get("/dashboard", function (req, res) {
 
 
 
-  pool.query('SELECT * FROM schedule', function (err, result) {
+  pool.query('SELECT s.adviser, s.subcode, s.time, s.days, s.advisory, sub.description FROM schedsub as s INNER JOIN enrolledstudents as e ON s.advisory = e.sec INNER JOIN subject as sub ON sub.subcode = s.subcode', function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -57,7 +57,7 @@ app.get("/dashboard", function (req, res) {
     const data = result;
 
 
-    generateTableHTML(data, function (tableHTML) {
+    generateTableDash(data, function (tableDash) {
 
       fs.readFile(__dirname + "/pages/students/dashboard.html", "utf8", (err, fileData) => {
         if (err) {
@@ -66,7 +66,7 @@ app.get("/dashboard", function (req, res) {
         }
 
 
-        const updatedFileData = fileData.replace("{{TABLE_CONTENT}}", tableHTML);
+        const updatedFileData = fileData.replace("{{TABLE_DASH}}", tableDash);
 
         res.send(updatedFileData);
       });
@@ -74,14 +74,15 @@ app.get("/dashboard", function (req, res) {
   });
 });
 
-function generateTableHTML(data, callback) {
-  let tableHTML = `
+function generateTableDash(data, callback) {
+  let tableDash = `
       <div class="table-container">
       <table>
         <thead>
           <tr>
             <th>Subject Code</th>
             <th>Subject Description</th>
+            <th>Day</th>
             <th>Time</th>
             <th>Room</th>
             <th>Instructor</th>
@@ -92,24 +93,25 @@ function generateTableHTML(data, callback) {
 
 
   for (const row of data) {
-    tableHTML += `
+    tableDash += `
           <tr>
             <td>${row.subcode}</td>
-            <td>${row.subjectDesc}</td>
+            <td>${row.description}</td>
+            <td>${row.days}</td>
             <td>${row.time}</td>
             <td>${row.room}</td>
-            <td>${row.instructor}</td>
+            <td>${row.adviser}</td>
           </tr>
         `;
   }
-  tableHTML += `
+  tableDash += `
             </tbody>
           </table>
         </div>
       `;
 
 
-  callback(tableHTML);
+  callback(tableDash);
 }
 
 
@@ -125,7 +127,7 @@ function generateTableHTML(data, callback) {
 //CLASS SCHEDULES TAB
 app.get("/classSched", function (req, res) {
 
-  pool.query('SELECT * FROM schedule', function (err, result) {
+  pool.query('SELECT s.adviser, s.subcode, s.time, s.days, s.advisory, sub.description FROM schedsub as s INNER JOIN enrolledstudents as e ON s.advisory = e.sec INNER JOIN subject as sub ON sub.subcode = s.subcode', function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -134,7 +136,7 @@ app.get("/classSched", function (req, res) {
     const data = result;
 
 
-    generateTableHTML(data, function (tableHTML) {
+    generateTableSched(data, function (tableSched) {
 
       fs.readFile(__dirname + "/pages/students/classSched.html", "utf8", (err, fileData) => {
         if (err) {
@@ -143,7 +145,7 @@ app.get("/classSched", function (req, res) {
         }
 
 
-        const updatedFileData = fileData.replace("{{TABLE_CONTENT}}", tableHTML);
+        const updatedFileData = fileData.replace("{{TABLE_SCHED}}", tableSched);
 
         res.send(updatedFileData);
       });
@@ -152,8 +154,8 @@ app.get("/classSched", function (req, res) {
 });
 
 
-function generateTableHTML(data, callback) {
-  let tableHTML = `
+function generateTableSched(data, callback) {
+  let tableSched = `
     <div class="table-container">
       <table>
         <thead>
@@ -170,33 +172,33 @@ function generateTableHTML(data, callback) {
   `;
 
   if (data.length === 0) {
-    tableHTML += `
+    tableSched += `
           <tr>
             <td colspan="6">No Classes Today</td>
           </tr>
         `;
   } else {
     for (const row of data) {
-      tableHTML += `
+      tableSched += `
           <tr>
             <td>${row.subcode}</td>
-            <td>${row.subjectDesc}</td>
-            <td>${row.day}</td>
+            <td>${row.description}</td>
+            <td>${row.days}</td>
             <td>${row.time}</td>
             <td>${row.room}</td>
-            <td>${row.instructor}</td>
+            <td>${row.adviser}</td>
           </tr>
         `;
     }
   }
 
-  tableHTML += `
+  tableSched += `
         </tbody>
       </table>
     </div>
   `;
 
-  callback(tableHTML);
+  callback(tableSched);
 }
 
 
@@ -208,7 +210,7 @@ app.get("/classScheds", function (req, res) {
   const dayPattern = `%${selectedDay}%`;
   const values = [dayPattern];
 
-  pool.query(`SELECT * FROM schedule WHERE day LIKE ?`, values, function (err, result) {
+  pool.query(`SELECT s.adviser, s.subcode, s.time, s.days, s.advisory, sub.description FROM schedsub as s INNER JOIN enrolledstudents as e ON s.advisory = e.sec INNER JOIN subject as sub ON sub.subcode = s.subcode WHERE days LIKE ?`, values, function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -221,8 +223,8 @@ app.get("/classScheds", function (req, res) {
     }
 
 
-    generateTableHTML(data, function (tableHTML) {
-      res.send(tableHTML);
+    generateTableSched(data, function (tableSched) {
+      res.send(tableSched);
     });
   });
 });
