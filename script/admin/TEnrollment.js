@@ -201,3 +201,37 @@ function deleteRow(student_number) {
 }
 
 
+
+
+
+
+
+
+//UPDATE
+function editEnroll(student_number) {
+    // Assuming you have a form with id "courseForm"
+    const form = document.getElementById('enroll');
+
+    document.getElementById("myModal").style.display = "block";
+    document.getElementById("myModal").style.display = "block";
+
+    // Fetch the course details using AJAX or fetch API
+    fetch(`/enrollment/${student_number}`)
+        .then(response => response.json())
+        .then(enroll => {
+            // Populate the form fields with course data
+            form.elements['snumber'].value = enroll.student_number;
+            form.elements['lname'].value = enroll.lname;
+            form.elements['fname'].value = enroll.fname;
+            form.elements['mname'].value = enroll.mname;
+            form.elements['CboCourse'].value = enroll.course;
+            form.elements['yrlvl'].value = enroll.yrlvl;
+            form.elements['sec'].value = enroll.sec;
+            
+            
+
+            // Change the form action to updateCourseForm endpoint
+            form.action = '/updateEnrollForm';
+        })
+        .catch(error => console.error('Error:', error));
+}

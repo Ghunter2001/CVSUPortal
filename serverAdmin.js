@@ -236,7 +236,7 @@ function generateTableEnrolled(data, callback) {
       <table>
         <thead>
           <tr>
-            <th>Action</th>
+            <th></th>
             <th>Student Number</th>
             <th>Course</th>
             <th>Year Level</th>
@@ -253,7 +253,10 @@ function generateTableEnrolled(data, callback) {
   for (const row of data) {
     tableEnrolled += `
           <tr>
-            <td><a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"></a></td>
+            <td>
+              <a onclick="editEnroll('${row.student_number}')"><img src="/img/edit.svg" alt="Edit"></a>
+              <a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"></a>
+            </td>
             <td>${row.student_number}</td>
             <td>${row.course}</td>
             <td>${row.yrlvl}</td>
@@ -290,6 +293,58 @@ app.post('/deleteEnroll', function (req, res) {
     res.status(200).send('Row deleted successfully');
   });
 });
+
+
+
+//UPDATE
+app.get('/enrollment/:student_number', function (req, res) {
+  const student_number = req.params.student_number;
+
+  pool.query('SELECT * FROM enrolledstudents WHERE student_number = ?', [student_number], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Database query error');
+    }
+    res.json(result[0]); 
+  });
+});
+
+
+
+app.post('/updateEnrollForm', function (req, res) {
+  const snumber = req.body.snumber;
+  const lname = req.body.lname;
+  const fname = req.body.fname;
+  const mname = req.body.mname;
+  const CboCourse = req.body.CboCourse;
+  const yrlvl = req.body.yrlvl;
+  const sec = req.body.sec;
+
+
+  // Update the course details in the database
+  pool.query('UPDATE enrolledstudents SET course = ?, sec = ?, yrlvl = ?, lname = ?, fname = ?, mname = ? WHERE student_number = ?', [CboCourse, sec, yrlvl, lname, fname, mname, snumber], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error updating course');
+    }
+    
+    console.log('Enrolled Students updated');
+    res.send(`
+        <script>
+          alert("Course updated successfully.");
+          window.location.href = "/enrollment"; 
+          </script>
+          `);
+  });
+});
+
+
+
+
+
+
+
+
 
 
 //SEARCH ENROLLED
@@ -402,7 +457,7 @@ app.post("/addSchedTemplate", async (req, res) => {
 
 
 app.get("/schedule", function (req, res) {
-  pool.query("SELECT templatesched.adviser, templatesched.subcode, templatesched.timeIn, templatesched.timeOut, createsched.days, createsched.advisory FROM templatesched INNER JOIN createsched ON templatesched.templateName = createsched.tempCreated", function (err, result) {
+  pool.query("SELECT templatesched.adviser, templatesched.subcode, templatesched.timeIn, templatesched.timeOut, createsched.days, createsched.advisory FROM templatesched INNER JOIN createsched ON templatesched.templateName = createsched.tempName", function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
@@ -444,7 +499,7 @@ function generateTableSchedule(data, callback) {
   for (const row of data) {
     tableSchedule += `
           <tr>
-            <td><a onclick="deleteRow('${row.student_number}')"><img src="/img/delete.svg" alt="Delete"></a></td>
+            <td><a onclick="deleteSCHED('${row.tempName}')"><img src="/img/delete.svg" alt="Delete"></a></td>
             <td>${row.adviser}</td>
             <td>${row.subcode}</td>
             <td>${row.advisory}</td>
@@ -462,6 +517,24 @@ function generateTableSchedule(data, callback) {
   callback(tableSchedule);
 }
 
+app.post('/deleteSCHEDS', function (req, res) {
+  const tempName = req.body.tempName;
+
+  const queryString = 'DELETE t FROM templatesched as t JOIN createsched as c ON t.templateName = c.tempName WHERE c.tempName = ?';
+  pool.query(queryString, [tempName], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error deleting row');
+    }
+    console.log('Row deleted');
+
+    res.status(200).send('Row deleted successfully');
+  });
+});
+
+
+
+
 
 
 
@@ -477,7 +550,7 @@ app.post("/addSched", async (req, res) => {
           return;
         }
 
-        connect.query("SELECT * FROM createsched WHERE tempCreated = ?", [tempCreated], (err, result) => {
+        connect.query("SELECT * FROM createsched WHERE tempName= ?", [tempCreated], (err, result) => {
           if (err) throw err;
 
           if (result.length > 0) {
@@ -489,7 +562,7 @@ app.post("/addSched", async (req, res) => {
                       `);
             connect.release();
           } else {
-            connect.query("INSERT INTO createsched(acadyear, tempCreated, days ,advisory) VALUES(?, ?, ?, ?)", [acadyear, tempCreated, selectedDays.join(), advisory], (err, result) => {
+            connect.query("INSERT INTO createsched(acadyear, tempName, days ,advisory) VALUES(?, ?, ?, ?)", [acadyear, tempCreated, selectedDays.join(), advisory], (err, result) => {
               if (err) {
                 console.error('Error inserting schedule into database: ' + err.stack);
                 res.status(500).send('Error inserting schedule into database');
@@ -948,7 +1021,7 @@ function generateTableCourses(data, callback) {
             <td>${row.courseCode}</td>
             <td>${row.description}</td>
             <td>
-              <a onclick="editCourse('${row.courseCode}')"><img src="/img/check.svg" alt="Edit"></a>
+              <a onclick="editCourse('${row.courseCode}')"><img src="/img/edit.svg" alt="Edit"></a>
               <a onclick="deleteRow('${row.courseCode}')"><img src="/img/delete.svg" alt="Delete"</a>
             </td>
           </tr>`;
@@ -994,7 +1067,7 @@ app.get('/courses/:courseCode', function (req, res) {
       console.error(err);
       return res.status(500).send('Database query error');
     }
-    res.json(result[0]); 
+    res.json(result[0]);
   });
 });
 
@@ -1010,7 +1083,7 @@ app.post('/updateCourseForm', function (req, res) {
       console.error(err);
       return res.status(500).send('Error updating course');
     }
-    
+
     console.log('Course updated');
     res.send(`
         <script>
@@ -1267,7 +1340,7 @@ function generateTableSubject(data, callback) {
             <td>${row.unitLab}</td>
             <td>${row.prerequisite}</td>
             <td>
-              <a onclick="editSubject('${row.subcode}')"><img src="/img/check.svg" alt="Edit"></a>
+              <a onclick="editSubject('${row.subcode}')"><img src="/img/edit.svg" alt="Edit"></a>
               <a onclick="deleteRow('${row.subcode}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
           </tr>`;
@@ -1338,7 +1411,7 @@ app.get('/subjects/:subcode', function (req, res) {
       console.error(err);
       return res.status(500).send('Database query error');
     }
-    res.json(result[0]); 
+    res.json(result[0]);
   });
 });
 
@@ -1360,7 +1433,7 @@ app.post('/updateSubjectForm', function (req, res) {
       console.error(err);
       return res.status(500).send('Error updating course');
     }
-    
+
     console.log('Subject updated');
     res.send(`
         <script>
@@ -1467,7 +1540,7 @@ function generateTableStudent(data, callback) {
         <thead>
           <tr>
             <th>
-              Action
+              
             </th>
             <th>LRN</th>
             <th>Last Name</th>
@@ -1488,6 +1561,7 @@ function generateTableStudent(data, callback) {
     tableStudents += `
           <tr>
             <td>
+              <a onclick="editStudent('${row.lrn}')"><img src="/img/edit.svg" alt="Edit"></a>
               <a onclick="archiveRow('${row.lrn}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
             <td>${row.lrn}</td>
@@ -1531,12 +1605,66 @@ app.post('/archive', function (req, res) {
 
 
 
+//UPDATE
+app.get('/students/:lrn', function (req, res) {
+  const lrn = req.params.lrn;
 
+  pool.query('SELECT * FROM details_students WHERE lrn = ?', [lrn], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Database query error');
+    }
+    res.json(result[0]);
+  });
+});
+
+
+app.post('/updateStudentForm', function (req, res) {
+  const lrn = req.body.lrn;
+  const lname = req.body.lname;
+  const fname = req.body.fname;
+  const mname = req.body.mname;
+  const cp = req.body.cp;
+  const sex = req.body.sex;
+  const bdate = req.body.bdate;
+  const email = req.body.email;
+  const address = req.body.address;
+
+  // Update the course details in the database
+  pool.query('UPDATE details_students SET lname = ?, fname = ?, mname = ?, bdate = ?, Sex = ?, cp = ?, address = ?, email = ? WHERE lrn = ?', [lname, fname, mname, bdate, sex, cp, address, email, lrn], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error updating course');
+    }
+
+    console.log('Course updated');
+    res.send(`
+        <script>
+          alert("Course updated successfully.");
+          window.location.href = "/students"; 
+          </script>
+          `);
+  });
+});
+
+
+
+
+
+
+
+//STUDENT END
+
+
+
+
+
+//TEACHERS TAB
 app.post("/addTeachersForm", (req, res) => {
   const { output, fname, mname, lname, sex, email } = req.body;
 
 
-  if (output !== "" || lname !== "" || fname !== "" || mname !== "" || sex !== "" || email !== "" ) {
+  if (output !== "" || lname !== "" || fname !== "" || mname !== "" || sex !== "" || email !== "") {
     pool.getConnection((err, connect) => {
       if (err) {
         console.error('Error connecting to database: ' + err.stack);
@@ -1629,7 +1757,7 @@ function generateTableTeachers(data, callback) {
     tableTeachers += `
           <tr>
             <td>
-              <a onclick="editTeacher('${row.teacherID}')"><img src="/img/check.svg" alt="Edit"></a>
+              <a onclick="editTeacher('${row.teacherID}')"><img src="/img/edit.svg" alt="Edit"></a>
               <a onclick="archiveTeacher('${row.teacherID}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
 
@@ -1693,7 +1821,7 @@ app.get('/teachers/:teacherID', function (req, res) {
       console.error(err);
       return res.status(500).send('Database query error');
     }
-    res.json(result[0]); 
+    res.json(result[0]);
   });
 });
 
@@ -1712,7 +1840,7 @@ app.post('/updateTeacherForm', function (req, res) {
       console.error(err);
       return res.status(500).send('Error updating teacher');
     }
-    
+
     console.log('Teacher updated');
     res.send(`
         <script>
