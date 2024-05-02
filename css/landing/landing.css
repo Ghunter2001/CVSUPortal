@@ -39,10 +39,22 @@ nav{
     border-radius: 1%;
     border-bottom-left-radius: 125px;
     border-bottom-right-radius: 125px;  
+    z-index: 999;
 }
 nav img{
-    width: 200px;
+    width: 150px;
     cursor: pointer;
+}
+nav.navigation{
+    display: flex;
+}
+#menu-btn{
+    width: 30px;
+    height: 30px;
+    display: none;
+}
+#menu-close{
+    display: none;
 }
 
 nav .navigation ul {
@@ -83,45 +95,24 @@ nav .navigation ul li a:hover{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 40px;
 }
 #home h2{
     height: 4%;
     color: #fff;
     font-size: 2.2rem;
-    line-height: 1px ;
     margin-right: 45%;
-    margin-top: 47%;
-    margin-bottom: 2%;
-
 }
-#home p,p1 {
-    height: 50%;
+#home p {
+    height: 10px;
     width: 50%;
     color: #fff;
     font-size: 1.2rem;
     line-height: 25px ;
     text-align: left;
-    margin-right: 26%;
+    margin-right: 44%; 
+    padding: 1%;
 }
-#home p2{
-    padding-right: 64%;
-    padding-bottom: 40%;
-    color: #fff;
-    font-size: 1.2rem;
-    line-height: 25px ;
-}
-#home .btn{
-    margin-top: 30px;
-}
-#home a{
-    text-decoration:none;
-    font-size: 0.9rem;
-    padding: 13px 35px;
-    background-color: #fff;
-    font-weight: 600;
-    border-radius: 5px;
-}
+
 #home a.blue{
     color: #fff;
     background:rgba(239, 116, 1, 0.989);
@@ -461,4 +452,120 @@ nav .navigation ul li a:hover{
     border-radius: 10%;
     box-shadow: 0 6px 12px rgba(0,0,0,.15), 0 8px 36px rgba(0,0=0=.27);
 }
+
+/* reponsive*/
+@media (max-width:768px){
+    nav{
+        padding: 25px 30px;
+    }
+    nav img{
+        width: 180px;
+    }
+    #menu-btn{
+        display: initial;
+    }
+    #menu-close{
+        display: initial;
+        font-size: 1.6rem;
+        color: #fff;
+        padding-right: 160px;
+    }
+    nav .navigation ul{
+        position: absolute;
+        top: 0;
+        right: -220px;
+        width: 220px;
+        height: 100vh;
+        background: #fff;
+        background: rgba(17,20,104,0.45);
+        backdrop-filter: blur(4.5px);
+        border: 1px solid rgba(255,255,255,0.18);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        transition: 0.3s ease;
+    }
+    nav .navigation ul.active{
+        right: 0;
+    }
+    nav .navigation ul li{
+        padding: 20px 0 20px 40px;
+        margin-left: 0;
+    }
+    nav .navigation ul li a{
+        color: #fff;
+    }
+    #home{
+        padding-top: 0px;
+    }
+    #home h2{
+        height:5%;
+        color: #fff;
+        font-size: 2.1rem;
+        line-height: 2px;
+        margin-right:35%;
+        margin-top: 70%;
+        margin-bottom: 3%;       
+        }
+    #home p {
+    height: 50%;
+    width: 50%;
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 25px ;
+    text-align: left;
+    margin-right: 44%;
+}
+
+#home p1{
+    height: 50%;
+    width: 50%;
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 25px;
+    text-align:left;
+    margin-right: 44%;
+    margin-top: -5%;
+}
+
+#home p2{
+    color: #fff;
+    margin-left: 31px;
+    margin: bottom 1px;
+    margin-top: -5%;
+}
+
+
+    #features{
+        padding: 8vw 4vw 0 4vw;
+    }
+}    
+
+@media (max-width:1024px){
+    nav{
+        flex-direction: row;
+        justify-content: space-between;
+        
+    }
+    nav .navigation ul{
+        align-items: center;
+        padding-inline:  10% ;
+        padding-right: 10%;
+        padding-left: 11%;
+    }
+    nav img{
+        width: 170px;
+    }
+    #home p{
+        margin-right: 40%;
+    }
+    #home p1{
+        margin-right: 40%;
+    }
+    #home p2{
+        margin-right: 7%;
+    }
+}
+
 

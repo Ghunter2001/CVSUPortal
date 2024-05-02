@@ -116,6 +116,14 @@ app.get("/classSched", function (req, res) {
 
 
 
+app.get("/teacherDash", function (req, res) {
+  res.sendFile(__dirname + "/pages/teachers/teacherDash.html");
+});
+
+
+
+
+
 
 
 

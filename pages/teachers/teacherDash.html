@@ -6,12 +6,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/adminDash.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/teacher/teacherDash.css">
 
-    <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    <title>Students Dashboard Panel</title>
+    <link rel="shortcut icon" href="img/CvsuLogo.png" type="image/x-icon">
+    <title>CVSUPortal - Faculty Dashboard</title>
 </head>
 
 <body>
@@ -21,79 +22,85 @@
                 <img src="img/CvsuLogo.png" alt="">
             </div>
 
-            <span class="logo_name">Voting System</span>
+            <span class="logo_name">Faculty Portal</span>
         </div>
 
         <div class="menu-items">
             <ul class="nav-links">
-                <li><a href="adminDash.html">
+                <li>
+                    <a href="adminDash">
                         <i class="uil uil-estate"></i>
-                        <span class="link-name">Dashboard</span>
-                    </a></li>
-                <li><a href="adminCandidates.html">
-                        <i class="uil uil-files-landscapes"></i>
-                        <span class="link-name">Candidates</span>
-                    </a></li>
+                        <span class="link-name">Home</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="notice">
+                        <i class="uil uil-analytics"></i>
+                        <span class="link-name">Grades</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="notice">
+                        <i class="uil uil-list-ul"></i>
+                        <span class="link-name">Masterlist</span>
+                    </a>
+                </li>
+
+                <!-- <li class="dropdown">
+                    <a href="#" class="dropbtn" role="button">
+                        <i class="uil uil-file-check-alt"></i>
+                        <span class="link-name">Transaction</span>
+                        <span class="dropdown-icon"><i class="uil uil-angle-down"></i></span>
+                    </a>
+
+                    <ul class="dropdown-content">
+                        <li><a href="enrollment"><span class="link-name">Enrollment</span></a></li>
+                        <li><a href="schedule"><span class="link-name">Schedule</span></a></li>
+                    </ul>
+                </li> -->
+
+
+
+
             </ul>
 
             <ul class="logout-mode">
-                <li><a href="login.html">
+                <li>
+                    <a href="login">
                         <i class="uil uil-signout"></i>
                         <span class="link-name">Logout</span>
-                    </a></li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                        <span class="link-name">Dark Mode</span>
                     </a>
-
-                    <div class="mode-toggle">
-                        <span class="switch"></span>
-                    </div>
                 </li>
+
             </ul>
         </div>
     </nav>
 
-    <section class="dashboard">
+    <div class="dashboard">
         <div class="top">
             <i class="sidebar-toggle"><img src="img/bars.svg"></i>
 
             <!--PROFILE-->
-            <img src="img/user.svg" alt="">
+            <div class="profile">
+                <img src="img/user.svg">
+                <div class="session">
+                    <p id="sessionName"></p>
+                    <p class="sessionRole" id="sessionNumber"></p>
+                </div>
+            </div>
         </div>
 
         <div class="dash-content">
 
-            <div class="activity">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text">Dashboard</span>
-                </div>
-
-                <div class="boxes">
-                    <div class="box box1">
-                        <img src="img/thumbs-up.svg">
-                        <span class="text">Voted</span>
-                        <span class="number" id="votedCount"></span>
-                    </div>
-                    <div class="box box2">
-                        <img src="img/account-pending-outline.svg">
-                        <span class="text">Registered User</span>
-                        <span class="number" id="usersCount"></span>
-                    </div>
-                    <div class="box box3">
-                        <img src="img/user.svg">
-                        <span class="text">Registered Candidates</span>
-                        <span class="number" id="candidatesCount"></span>
-                    </div>
-                </div>
-            </div>
+            
         </div>
-    </section>
+    </div>
 
-    <script src="script/adminDash.js"></script>
+    <script src="script/teachehr/teacherDash.js"></script>
+    <script src="script/teacher/main.js"></script>
+
 </body>
 
 </html>
