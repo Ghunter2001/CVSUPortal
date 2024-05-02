@@ -181,7 +181,7 @@ nav .navigation ul li a:hover{
     text-align: center;
     height: 100%;
 }
-#Course .course-box video{
+#Course .course-box img{
     margin-left: 50%;
     height: 100%;
     width: 100%;
@@ -542,6 +542,12 @@ nav .navigation ul li a:hover{
     }
 }    
 
+@media (max-width: 1000px) {}
+
+@media (max-width: 780px) {}
+
+@media (max-width: 560px) {}
+
 @media (max-width:1024px){
     nav{
         flex-direction: row;
@@ -567,5 +573,4 @@ nav .navigation ul li a:hover{
         margin-right: 7%;
     }
 }
-
 
