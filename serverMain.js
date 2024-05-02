@@ -87,6 +87,13 @@ app.get("/requirements", function (req, res) {
   res.sendFile(__dirname + "/pages/admin/RReq.html");
 });
 
+app.get("/admission", function (req, res) {
+  res.sendFile(__dirname + "/pages/admission/admForm.html");
+});
+
+
+
+
 
 
 
@@ -106,6 +113,14 @@ app.get("/grades", function (req, res) {
 app.get("/classSched", function (req, res) {
   res.sendFile(__dirname + "/pages/students/classSched.html");
 });
+
+
+
+app.get("/teacherDash", function (req, res) {
+  res.sendFile(__dirname + "/pages/teachers/teacherDash.html");
+});
+
+
 
 
 

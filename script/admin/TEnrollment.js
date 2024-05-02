@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function closeModal() {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
+    document.getElementById("myModal").style.display = "none";
+    document.querySelectorAll('.myModal input').forEach(input => input.value = '');
 }
 
 
@@ -79,22 +79,23 @@ window.onbeforeunload = fetchEnroll;
 
 
 
-//SEARCH NEW STUDENTS
+//SEARCH STUDENTS
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchStudents');
-    const submitBtn = document.getElementById('submitBTN');
+    const submit = document.getElementById('submit');
     const lrnInput = document.getElementById('lrn');
     const lnameInput = document.getElementById('lname');
     const fnameInput = document.getElementById('fname');
     const mnameInput = document.getElementById('mname');
 
-    submitBtn.addEventListener('click', () => {
-        const lrn = searchInput.value;
+    submit.addEventListener('click', () => {
+        const value = searchInput.value;
 
-        fetch(`/searchRegister?searchStudents=${lrn}`)
+        fetch(`/searchRegister?searchStudents=${value}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Student not found');
+                    alert("No Data Found");
+                    document.querySelectorAll('.myModal input').forEach(input => input.value = '');
                 }
                 return response.json();
             })
@@ -168,6 +169,8 @@ document.getElementById("submitBTN").addEventListener("click", function (event) 
         alert("Please fill out all required fields.");
     }
 });
+
+
 
 
 

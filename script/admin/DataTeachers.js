@@ -1,29 +1,47 @@
 document.getElementById("datateachersForm").addEventListener("submit", function (event) {
     event.preventDefault();
+    
 
-    const output = document.getElementById("output").value;
-    const fname = document.getElementById("fname").value;
-    const mname = document.getElementById("mname").value;
-    const lname = document.getElementById("lname").value;
-    const bdate = document.getElementById("bdate").value;
-    const sex = document.getElementById("sex").value;
-    const cp = document.getElementById("cp").value;
-    const email = document.getElementById("email").value;
-    const address = document.getElementById("address").value;
+    const output = document.getElementById("output").value.trim();
+    const fname = document.getElementById("fname").value.trim();
+    const mname = document.getElementById("mname").value.trim();
+    const lname = document.getElementById("lname").value.trim();
+    const email = document.getElementById("email").value.trim();
 
+    var isValid = true;
+    if (output === "") {
+        isValid = false;
+    }
+    if (fname === "") {
+        isValid = false;
+    }
+    if (mname === "") {
+        isValid = false;
+    }
+    if (mname === "") {
+        isValid = false;
+    }
+    if (lname === "") {
+        isValid = false;
+    }
+    if (email === "") {
+        isValid = false;
+    }
 
+    // Submit the form if valid
+    if (isValid) {
 
-    fetch("/adTeachersForm", {
+        fetch("/addTeachersForm", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ output, fname, mname, lname, bdate, sex, cp, email, address })
+        body: JSON.stringify({ output, fname, mname, lname, email })
     })
         .then(response => response.text())
         .then(data => {
             console.log(data);
-            // Handle response here, e.g., show success message and redirect
+            window.location.href = "/teachers"
 
         })
         .catch(error => {
@@ -31,19 +49,24 @@ document.getElementById("datateachersForm").addEventListener("submit", function 
             // Handle error here, e.g., show error message
             alert("An error occurred. Please try again.");
         });
+    } else {
+        alert("Please fill out all required fields.");
+    }
+
+    
 });
 
 
 
 //FOR DELETION
-function archiveTeacher(id) {
+function archiveTeacher(teacherID) {
     if (confirm("Are you sure you want to archive this row?")) {
         fetch('/archiveTeacher', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id }),
+            body: JSON.stringify({ teacherID }),
         })
             .then(response => {
                 if (!response.ok) {
@@ -60,30 +83,14 @@ function archiveTeacher(id) {
 
 
 
-//DROPDOWN
-fetch('/advisoryOption')
-    .then(response => response.json())
-    .then(data => {
-        const selectElement = document.getElementById('advisory');
-        data.forEach(option => {
-            const optionElement = document.createElement('option');
-            optionElement.value = option.value;
-            optionElement.textContent = option.text;
-            selectElement.appendChild(optionElement);
-        });
-    })
-    .catch(error => console.error('Error fetching credit units:', error));
+// function generateNumbers() {
 
+//     var currentYear = new Date().getFullYear().toString();
 
+//     var generatedNumber = currentYear;
+//     for (var i = 1; i <= 5; i++) {
+//         generatedNumber += i.toString();
+//     }
 
-function generateNumbers() {
-
-    var currentYear = new Date().getFullYear().toString();
- 
-    var generatedNumber = currentYear;
-    for (var i = 1; i <= 5; i++) {
-        generatedNumber += i.toString();
-    }
-
-    document.getElementById("output").value = generatedNumber;
-}
+//     document.getElementById("output").value = generatedNumber;
+// }

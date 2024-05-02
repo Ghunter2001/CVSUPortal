@@ -37,7 +37,7 @@ document.getElementById("submitBTN").addEventListener("click", function (event) 
 function deleteRow(courseCode) {
     // Ask for confirmation
     if (confirm("Are you sure you want to delete this row?")) {
-        fetch('/delete', {
+        fetch('/deleteCourse', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

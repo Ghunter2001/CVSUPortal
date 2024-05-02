@@ -26,9 +26,7 @@
     --tran-03: all 0.2s ease;
 }
 
-body {
-    min-height: 100vh;
-}
+
 
 body.dark {
     --primary-color: #626969;
@@ -368,8 +366,11 @@ nav.close~.dashboard .top {
 .dash-content .conTable .table {
     overflow-y: scroll;
     width: 100%;
-    height: 90vh;
+    
 }
+
+
+
 
 
 
@@ -395,6 +396,11 @@ body.dark .dashboard footer {
     color: var(--panel-color);
 }
 
+
+
+.profile {
+    display: none;
+}
 
 
 @media (max-width: 1000px) {
