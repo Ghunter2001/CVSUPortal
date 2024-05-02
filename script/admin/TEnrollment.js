@@ -1,3 +1,8 @@
+document.getElementById("entrylabel").style.display = "block ";
+document.getElementById("entry").style.display = "block";
+document.getElementById("yrlsec").style.display = "none";
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     var modal = document.getElementById("myModal");
@@ -18,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function closeModal() {
     document.getElementById("myModal").style.display = "none";
     document.querySelectorAll('.myModal input').forEach(input => input.value = '');
+    window.location.href = "enrollment";
 }
 
 
@@ -213,7 +219,12 @@ function editEnroll(student_number) {
     const form = document.getElementById('enroll');
 
     document.getElementById("myModal").style.display = "block";
-    document.getElementById("myModal").style.display = "block";
+
+    document.getElementById("yrlsec").style.display = "block";
+
+    document.getElementById("entrylabel").style.display = "none ";
+    document.getElementById("entry").style.display = "none";
+    document.getElementById("searchbar").style.display = "none";
 
     // Fetch the course details using AJAX or fetch API
     fetch(`/enrollment/${student_number}`)
@@ -228,8 +239,6 @@ function editEnroll(student_number) {
             form.elements['yrlvl'].value = enroll.yrlvl;
             form.elements['sec'].value = enroll.sec;
             
-            
-
             // Change the form action to updateCourseForm endpoint
             form.action = '/updateEnrollForm';
         })
