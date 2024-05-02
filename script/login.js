@@ -71,10 +71,16 @@ document.getElementById("submitButton").addEventListener("click", function (even
   } else {
     alert("Please fill out all required fields and make sure passwords match.");
   }
+
+  if (username && email && password && confirmPassword && password === confirmPassword) {
+    showModal('Signup Successful!', true);
+  } else {
+    showModal('Please fill out all required fields and make sure passwords match', false);
+  }
 });
 
 
-
+Z
 //login form validation
 function validateLoginForm(event) {
   event.preventDefault(); // Prevent form submission

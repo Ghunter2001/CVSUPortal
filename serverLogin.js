@@ -95,7 +95,7 @@ app.post("/signup", (req, res) => {
             console.log("Signup successful");
             res.send(`
           <script>
-            alert("Signup successful!");
+            alert("Signup Successful!");
             window.location.href = "/login.html"; // Redirect to the login page after successful sign-up
           </script>
         `);
