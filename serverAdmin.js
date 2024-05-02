@@ -720,7 +720,7 @@ app.post("/addAcademicYear", async (req, res) => {
 
                     res.send(`
                         <script>
-                          alert("New Section Added.");
+                          alert("New Academic Year Added.");
                           window.location.href = "/acadyear"; 
                         </script>
                       `);
@@ -1267,6 +1267,7 @@ function generateTableSubject(data, callback) {
             <td>${row.unitLab}</td>
             <td>${row.prerequisite}</td>
             <td>
+              <a onclick="editSubject('${row.subcode}')"><img src="/img/check.svg" alt="Edit"></a>
               <a onclick="deleteRow('${row.subcode}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
           </tr>`;
@@ -1324,6 +1325,57 @@ app.get('/prereqOption', (req, res) => {
     res.json(subject);
   });
 });
+
+
+
+
+//UPDATE
+app.get('/subjects/:subcode', function (req, res) {
+  const subcode = req.params.subcode;
+
+  pool.query('SELECT * FROM subject WHERE subcode = ?', [subcode], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Database query error');
+    }
+    res.json(result[0]); 
+  });
+});
+
+
+
+app.post('/updateSubjectForm', function (req, res) {
+  const CboCourse = req.body.CboCourse;
+  const subCode = req.body.subCode;
+  const subDesc = req.body.subDesc;
+  const CboYear = req.body.CboYear;
+  const CboSem = req.body.CboSem;
+  const CboLec = req.body.CboLec;
+  const CboLab = req.body.CboLab;
+  const prereq = req.body.prereq;
+
+  // Update the course details in the database
+  pool.query('UPDATE subject SET course = ?, description = ?, yrlvl = ?, sem = ?, unitLec = ?, unitLab = ?, prerequisite =? WHERE subcode = ?', [CboCourse, subDesc, CboYear, CboSem, CboLec, CboLab, prereq, subCode], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error updating course');
+    }
+    
+    console.log('Subject updated');
+    res.send(`
+        <script>
+          alert("Subject updated successfully.");
+          window.location.href = "/subjects"; 
+          </script>
+          `);
+  });
+});
+
+
+
+
+
+
 
 
 // SUBJECT TAB END
@@ -1481,10 +1533,10 @@ app.post('/archive', function (req, res) {
 
 
 app.post("/addTeachersForm", (req, res) => {
-  const { output, fname, mname, lname, bdate, sex, cp, email, address } = req.body;
+  const { output, fname, mname, lname, sex, email } = req.body;
 
 
-  if (ouput !== "" || lname !== "" || fname !== "" || mname !== "" || cp !== "" || sex !== "" || bdate !== "" || email !== "" || address !== "") {
+  if (output !== "" || lname !== "" || fname !== "" || mname !== "" || sex !== "" || email !== "" ) {
     pool.getConnection((err, connect) => {
       if (err) {
         console.error('Error connecting to database: ' + err.stack);
@@ -1492,7 +1544,7 @@ app.post("/addTeachersForm", (req, res) => {
       }
 
 
-      connect.query("SELECT * FROM details_teachers WHERE T_ID= ?", [output], (err, result) => {
+      connect.query("SELECT * FROM faculty WHERE teacherID= ?", [output], (err, result) => {
         if (err) throw err;
 
         if (result.length > 0) {
@@ -1504,7 +1556,7 @@ app.post("/addTeachersForm", (req, res) => {
                     `);
           connect.release();
         } else {
-          connect.query("INSERT INTO details_teachers(T_ID, FirstName, LastName, MiddleName, Sex, Address, Email, BirthDate, ContactNumber) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", [output, fname, mname, lname, bdate, sex, cp, email, address], (err, result) => {
+          connect.query("INSERT INTO faculty(teacherID, fname, mname, lname, sex, email) VALUES(?, ?, ?, ?, ?, ?)", [output, fname, mname, lname, sex, email], (err, result) => {
             if (err) throw err;
 
             res.send(`
@@ -1565,7 +1617,8 @@ function generateTableTeachers(data, callback) {
             </th>
             <th>ID</th>
             <th>Name</th>
-            <th>Advisory</th>
+            <th>Sex</th>
+            <th>Email</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -1576,12 +1629,14 @@ function generateTableTeachers(data, callback) {
     tableTeachers += `
           <tr>
             <td>
+              <a onclick="editTeacher('${row.teacherID}')"><img src="/img/check.svg" alt="Edit"></a>
               <a onclick="archiveTeacher('${row.teacherID}')"><img src="/img/delete.svg" alt="Delete"</button>
             </td>
 
             <td>${row.teacherID}</td>
             <td>${row.fname} ${row.mname} ${row.lname}</td>
-            <td>${row.advisory}</td>
+            <td>${row.sex}</td>
+            <td>${row.email}</td>
             <td>${row.status}</td>
           </tr>`;
   }
@@ -1597,10 +1652,11 @@ function generateTableTeachers(data, callback) {
 
 // Function to delete row
 app.post('/archiveTeacher', function (req, res) {
-  const id = req.body.id;
+  const teacherID = req.body.teacherID;
 
-  const queryString = 'UPDATE faculty SET status = "INACTIVE" WHERE lrn = ?';
-  pool.query(queryString, [id], (err, result) => {
+  // const queryString = 'UPDATE faculty SET status = "INACTIVE" WHERE teacherID = ?';
+  const queryString = 'DELETE FROM faculty WHERE teacherID = ?';
+  pool.query(queryString, [teacherID], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Error store row');
@@ -1628,6 +1684,44 @@ app.get('/advisoryOption', (req, res) => {
 
 
 
+//UPDATE
+app.get('/teachers/:teacherID', function (req, res) {
+  const teacherID = req.params.teacherID;
+
+  pool.query('SELECT * FROM faculty WHERE teacherID = ?', [teacherID], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Database query error');
+    }
+    res.json(result[0]); 
+  });
+});
+
+
+app.post('/updateTeacherForm', function (req, res) {
+  const output = req.body.output;
+  const fname = req.body.fname;
+  const mname = req.body.mname;
+  const lname = req.body.lname;
+  const sex = req.body.sex;
+  const email = req.body.email;
+
+  // Update the teacher details in the database
+  pool.query('UPDATE faculty SET fname = ?, mname = ?, lname = ?, sex = ?, email = ? WHERE teacherID = ?', [fname, mname, lname, sex, email, output], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error updating teacher');
+    }
+    
+    console.log('Teacher updated');
+    res.send(`
+        <script>
+          alert("Teacher updated successfully.");
+          window.location.href = "/teachers"; 
+          </script>
+          `);
+  });
+});
 
 
 
@@ -1636,6 +1730,12 @@ app.get('/advisoryOption', (req, res) => {
 
 
 
+
+
+
+
+
+//ARCHIVE TAB
 app.get("/Archive", function (req, res) {
 
   pool.query('SELECT * FROM enrolledstudents WHERE status="DROPPED"', function (err, result) {

@@ -5,6 +5,7 @@ document.getElementById("datateachersForm").addEventListener("submit", function 
     const output = document.getElementById("output").value.trim();
     const fname = document.getElementById("fname").value.trim();
     const mname = document.getElementById("mname").value.trim();
+    const sex = document.getElementById("sex").value.trim();
     const lname = document.getElementById("lname").value.trim();
     const email = document.getElementById("email").value.trim();
 
@@ -27,6 +28,9 @@ document.getElementById("datateachersForm").addEventListener("submit", function 
     if (email === "") {
         isValid = false;
     }
+    if (sex === "") {
+        isValid = false;
+    }
 
     // Submit the form if valid
     if (isValid) {
@@ -36,7 +40,7 @@ document.getElementById("datateachersForm").addEventListener("submit", function 
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ output, fname, mname, lname, email })
+        body: JSON.stringify({ output, fname, mname, lname, sex, email })
     })
         .then(response => response.text())
         .then(data => {
@@ -94,3 +98,25 @@ function archiveTeacher(teacherID) {
 
 //     document.getElementById("output").value = generatedNumber;
 // }
+
+
+//UPDATE
+function editTeacher(teacherID) {
+    const form = document.getElementById('teachers');
+
+    fetch(`/teachers/${teacherID}`)
+        .then(response => response.json())
+        .then(teachers => {
+            // Populate the form fields with teacher data
+            form.elements['output'].value = teachers.teacherID;
+            form.elements['fname'].value = teachers.fname;
+            form.elements['mname'].value = teachers.mname;
+            form.elements['lname'].value = teachers.lname;
+            form.elements['sex'].value = teachers.sex;
+            form.elements['email'].value = teachers.email;
+
+
+            form.action = '/updateTeacherForm';
+        })
+        .catch(error => console.error('Error:', error));
+}

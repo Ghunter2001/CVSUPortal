@@ -37,6 +37,9 @@ document.getElementById("submitBTN").addEventListener("click", function (event) 
     isValid = false;
   }
 
+
+
+
   // Submit the form if valid
   if (isValid) {
     var subCode = document.getElementById("subCode");
@@ -111,3 +114,30 @@ fetch('/prereqOption')
   })
   .catch(error => console.error('Error fetching credit units:', error));
 
+
+
+  
+//UPDATE
+function editSubject(subcode) {
+
+  const form = document.getElementById('subject');
+
+
+  fetch(`/subjects/${subcode}`)
+      .then(response => response.json())
+      .then(subject => {
+          // Populate the form fields with course data
+          form.elements['CboCourse'].value = subject.course;
+          form.elements['subCode'].value = subject.subcode;
+          form.elements['subDesc'].value = subject.description;
+          form.elements['CboYear'].value = subject.yrlvl;
+          form.elements['CboSem'].value = subject.sem;
+          form.elements['CboLec'].value = subject.unitLec;
+          form.elements['CboLab'].value = subject.unitLab;
+          form.elements['prereq'].value = subject.prerequisite;
+
+          // Change the form action to updateCourseForm endpoint
+          form.action = '/updateSubjectForm';
+      })
+      .catch(error => console.error('Error:', error));
+}

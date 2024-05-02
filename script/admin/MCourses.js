@@ -65,7 +65,7 @@ function deleteRow(courseCode) {
 
 
 
-
+//UPDATE
 function editCourse(courseCode) {
     // Assuming you have a form with id "courseForm"
     const form = document.getElementById('course');
