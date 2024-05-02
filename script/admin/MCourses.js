@@ -33,6 +33,8 @@ document.getElementById("submitBTN").addEventListener("click", function (event) 
 
 
 
+
+
 //FOR DELETION
 function deleteRow(courseCode) {
     // Ask for confirmation
@@ -56,4 +58,28 @@ function deleteRow(courseCode) {
                 // Handle errors
             });
     }
+}
+
+
+
+
+
+
+
+function editCourse(courseCode) {
+    // Assuming you have a form with id "courseForm"
+    const form = document.getElementById('course');
+
+    // Fetch the course details using AJAX or fetch API
+    fetch(`/courses/${courseCode}`)
+        .then(response => response.json())
+        .then(course => {
+            // Populate the form fields with course data
+            form.elements['courseCode'].value = course.courseCode;
+            form.elements['courseDesc'].value = course.description;
+
+            // Change the form action to updateCourseForm endpoint
+            form.action = '/updateCourseForm';
+        })
+        .catch(error => console.error('Error:', error));
 }

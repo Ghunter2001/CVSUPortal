@@ -969,7 +969,8 @@ function generateTableCourses(data, callback) {
             <td>${row.courseCode}</td>
             <td>${row.description}</td>
             <td>
-              <a onclick="deleteRow('${row.courseCode}')"><img src="/img/delete.svg" alt="Delete"</button>
+              <a onclick="editCourse('${row.courseCode}')"><img src="/img/check.svg" alt="Edit"></a>
+              <a onclick="deleteRow('${row.courseCode}')"><img src="/img/delete.svg" alt="Delete"</a>
             </td>
           </tr>`;
   }
@@ -998,6 +999,50 @@ app.post('/deleteCourse', function (req, res) {
     res.status(200).send('Row deleted successfully');
   });
 });
+
+
+
+
+
+
+
+//UPDATE
+app.get('/courses/:courseCode', function (req, res) {
+  const courseCode = req.params.courseCode;
+
+  pool.query('SELECT * FROM course WHERE courseCode = ?', [courseCode], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Database query error');
+    }
+    res.json(result[0]); 
+  });
+});
+
+
+
+app.post('/updateCourseForm', function (req, res) {
+  const courseCode = req.body.courseCode;
+  const courseDesc = req.body.courseDesc;
+
+  // Update the course details in the database
+  pool.query('UPDATE course SET description = ? WHERE courseCode = ?', [courseDesc, courseCode], function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error updating course');
+    }
+    
+    console.log('Course updated');
+    res.send(`
+        <script>
+          alert("Course updated successfully.");
+          window.location.href = "/courses"; 
+          </script>
+          `);
+  });
+});
+
+
 
 
 //COURSE END
