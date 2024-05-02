@@ -181,7 +181,7 @@ nav .navigation ul li a:hover{
     text-align: center;
     height: 100%;
 }
-#Course .course-box video{
+#Course .course-box img{
     margin-left: 50%;
     height: 100%;
     width: 100%;
@@ -540,7 +540,14 @@ nav .navigation ul li a:hover{
     #features{
         padding: 8vw 4vw 0 4vw;
     }
+
 }    
+
+@media (max-width: 1000px) {}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 560px) {}
 
 @media (max-width:1024px){
     nav{
@@ -567,5 +574,4 @@ nav .navigation ul li a:hover{
         margin-right: 7%;
     }
 }
-
 
