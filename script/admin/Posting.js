@@ -13,7 +13,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//DROPDOWN
+fetch('/pCourseOption')
+  .then(response => response.json())
+  .then(data => {
+    const selectElement = document.getElementById('pCourse');
+    data.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option.value;
+      optionElement.textContent = option.text;
+      selectElement.appendChild(optionElement);
+    });
+  })
+  .catch(error => console.error('Error fetching credit units:', error));
 
+fetch('/prereqOption')
+  .then(response => response.json())
+  .then(data => {
+    const selectElement = document.getElementById('prereq');
+    data.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option.value;
+      optionElement.textContent = option.text;
+      selectElement.appendChild(optionElement);
+    });
+  })
+  .catch(error => console.error('Error fetching credit units:', error));
 
 function closeModal() {
     var modal = document.getElementById("myModal");
