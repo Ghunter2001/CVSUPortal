@@ -239,8 +239,7 @@ function generateTableEnrolled(data, callback) {
             <th></th>
             <th>Student Number</th>
             <th>Course</th>
-            <th>Year Level</th>
-            <th>Section</th>
+            <th>Year Level/Section</th>
             <th>Last Name</th>
             <th>First Name</th>
             <th>Middle Name</th>
@@ -260,7 +259,6 @@ function generateTableEnrolled(data, callback) {
             <td>${row.student_number}</td>
             <td>${row.course}</td>
             <td>${row.yrlvl}</td>
-            <td>${row.sec}</td>
             <td>${row.lname}</td>
             <td>${row.fname}</td>
             <td>${row.mname}</td>
@@ -318,11 +316,10 @@ app.post('/updateEnrollForm', function (req, res) {
   const mname = req.body.mname;
   const CboCourse = req.body.CboCourse;
   const yrlvl = req.body.yrlvl;
-  const sec = req.body.sec;
 
 
   // Update the course details in the database
-  pool.query('UPDATE enrolledstudents SET course = ?, sec = ?, yrlvl = ?, lname = ?, fname = ?, mname = ? WHERE student_number = ?', [CboCourse, sec, yrlvl, lname, fname, mname, snumber], function (err, result) {
+  pool.query('UPDATE enrolledstudents SET course = ?, yrlvl = ?, lname = ?, fname = ?, mname = ? WHERE student_number = ?', [CboCourse, yrlvl, lname, fname, mname, snumber], function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send('Error updating course');

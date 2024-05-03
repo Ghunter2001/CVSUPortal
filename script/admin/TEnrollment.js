@@ -237,7 +237,6 @@ function editEnroll(student_number) {
             form.elements['mname'].value = enroll.mname;
             form.elements['CboCourse'].value = enroll.course;
             form.elements['yrlvl'].value = enroll.yrlvl;
-            form.elements['sec'].value = enroll.sec;
             
             // Change the form action to updateCourseForm endpoint
             form.action = '/updateEnrollForm';

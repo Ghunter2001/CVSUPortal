@@ -48,7 +48,7 @@ app.get("/dashboard", function (req, res) {
 
 
 
-  pool.query('SELECT s.adviser, s.subcode, s.time, s.days, s.advisory, sub.description FROM schedsub as s INNER JOIN enrolledstudents as e ON s.advisory = e.sec INNER JOIN subject as sub ON sub.subcode = s.subcode', function (err, result) {
+  pool.query('SELECT s.adviser, s.subcode, s.time, s.days, s.advisory, sub.description FROM schedsub as s INNER JOIN enrolledstudents as e ON s.advisory = e.yrlvl INNER JOIN subject as sub ON sub.subcode = s.subcode WHERE e.yrlvl ="3-5"', function (err, result) {
     if (err) {
       console.error(err);
       return res.status(500).send("Database query error");
